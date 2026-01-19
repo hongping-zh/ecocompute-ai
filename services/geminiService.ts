@@ -1,4 +1,4 @@
-import { GoogleGenAI, Type, Tool } from "@google/genai";
+import { GoogleGenerativeAI, SchemaType } from "@google/generative-ai";
 import { AnalysisResult, HardwareProfile } from "../types";
 import { analyzeCodeStatic } from "./staticAnalyzer";
 
@@ -10,7 +10,7 @@ import { analyzeCodeStatic } from "./staticAnalyzer";
 //   console.error("Missing API Key. Please set GEMINI_API_KEY in .env.local");
 // }
 
-// const ai = new GoogleGenAI({ apiKey: apiKey });
+// const genAI = new GoogleGenerativeAI(apiKey);
 
 // Region Carbon Intensity Map (Duplicated from HardwareSelector to avoid circular deps/React imports)
 const REGION_CARBON_INTENSITY: Record<string, number> = {
@@ -104,8 +104,8 @@ export const analyzeAndOptimizeStream = async (
       throw new GeminiError("No API Key provided. Please set your Gemini API Key in Settings.", false);
   }
 
-  const ai = new GoogleGenAI({ apiKey: apiKey });
-
+  const genAI = new GoogleGenerativeAI(apiKey);
+  
   // Step 1: Run Static Analysis (Enhanced P1-1)
   const staticData = analyzeCodeStatic(code);
   const estimatedGFlops = staticData.estimatedFlops;
@@ -190,7 +190,11 @@ export const analyzeAndOptimizeStream = async (
   }
 
   // P1-New: Add Custom Tool for Carbon Calculation
-  const tools: Tool[] = [
+  // Note: @google/generative-ai defines tools differently in model config, not as separate objects passed to startChat usually,
+  // but it supports 'tools' in model config.
+  // We need to check if 'googleSearch' and 'codeExecution' are supported in the Web SDK.
+  // They are supported in Gemini 1.5 Pro / Flash.
+  const tools = [
     { googleSearch: {} },
     { codeExecution: {} },
     {
@@ -198,10 +202,10 @@ export const analyzeAndOptimizeStream = async (
         name: "calculate_carbon_footprint",
         description: "Calculate carbon footprint based on energy consumption and region.",
         parameters: {
-          type: Type.OBJECT,
+          type: SchemaType.OBJECT,
           properties: {
-            energyJoules: { type: Type.NUMBER, description: "Total energy consumed in Joules" },
-            region: { type: Type.STRING, description: "Data center region (e.g., us-central1)" }
+            energyJoules: { type: SchemaType.NUMBER, description: "Total energy consumed in Joules" },
+            region: { type: SchemaType.STRING, description: "Data center region (e.g., us-central1)" }
           },
           required: ["energyJoules", "region"]
         }
@@ -211,107 +215,97 @@ export const analyzeAndOptimizeStream = async (
 
   return retryOperation(async () => {
     try {
-      const chat = ai.chats.create({
-        model: "gemini-3-pro-preview",
-        config: {
-          systemInstruction,
-          tools: tools,
-          thinkingConfig: { 
-            thinkingBudget: 1024 // Explicit budget as requested
-          },
+      const model = genAI.getGenerativeModel({
+        model: "gemini-1.5-pro", // Switch to 1.5 Pro which is stable for Web SDK
+        systemInstruction: systemInstruction,
+        tools: tools as any, // Type cast if needed
+      });
+      
+      const chat = model.startChat({
+        generationConfig: {
           responseMimeType: "application/json",
           responseSchema: {
-            type: Type.OBJECT,
+            type: SchemaType.OBJECT,
             properties: {
               // P0-2: Real Steps in Reasoning Trace
-              reasoning_trace: { type: Type.STRING, description: "Structured technical audit including Search and Code Execution results." },
+              reasoning_trace: { type: SchemaType.STRING, description: "Structured technical audit including Search and Code Execution results." },
               
               // P0-3: Explainability Fields
-              assumptions: { type: Type.ARRAY, items: { type: Type.STRING }, description: "List technical assumptions (e.g., 'Batch Size=1', 'FP16', 'Utilization=85%', 'Duration=24h')" },
-              citations: { type: Type.ARRAY, items: { type: Type.STRING }, description: "Sources for data" },
-              energy_model: { type: Type.STRING, description: "How Joules were calculated from GFLOPs" },
+              assumptions: { type: SchemaType.ARRAY, items: { type: SchemaType.STRING }, description: "List technical assumptions (e.g., 'Batch Size=1', 'FP16', 'Utilization=85%', 'Duration=24h')" },
+              citations: { type: SchemaType.ARRAY, items: { type: SchemaType.STRING }, description: "Sources for data" },
+              energy_model: { type: SchemaType.STRING, description: "How Joules were calculated from GFLOPs" },
               
-              originalEnergyJoules: { type: Type.NUMBER },
-              optimizedEnergyJoules: { type: Type.NUMBER },
-              improvementPercentage: { type: Type.NUMBER },
-              carbonSavedGrams: { type: Type.NUMBER },
-              estimatedHourlyCost: { type: Type.NUMBER },
-              costSavingsPer1MInference: { type: Type.NUMBER },
-              confidenceScore: { type: Type.NUMBER },
-              uncertaintyFactors: { type: Type.ARRAY, items: { type: Type.STRING } },
+              originalEnergyJoules: { type: SchemaType.NUMBER },
+              optimizedEnergyJoules: { type: SchemaType.NUMBER },
+              improvementPercentage: { type: SchemaType.NUMBER },
+              carbonSavedGrams: { type: SchemaType.NUMBER },
+              estimatedHourlyCost: { type: SchemaType.NUMBER },
+              costSavingsPer1MInference: { type: SchemaType.NUMBER },
+              confidenceScore: { type: SchemaType.NUMBER },
+              uncertaintyFactors: { type: SchemaType.ARRAY, items: { type: SchemaType.STRING } },
               
               benchmarkData: {
-                type: Type.OBJECT,
+                type: SchemaType.OBJECT,
                 properties: {
-                  found: { type: Type.BOOLEAN },
-                  source: { type: Type.STRING },
-                  device: { type: Type.STRING },
-                  metric: { type: Type.STRING },
-                  value: { type: Type.STRING }
+                  found: { type: SchemaType.BOOLEAN },
+                  source: { type: SchemaType.STRING },
+                  device: { type: SchemaType.STRING },
+                  metric: { type: SchemaType.STRING },
+                  value: { type: SchemaType.STRING }
                 },
                 required: ["found", "source", "device", "metric", "value"]
               },
 
-              strategyAnalysis: { type: Type.STRING },
-              bottleneckAnalysis: { type: Type.STRING },
-              impactAnalogy: { type: Type.STRING },
+              strategyAnalysis: { type: SchemaType.STRING },
+              bottleneckAnalysis: { type: SchemaType.STRING },
+              impactAnalogy: { type: SchemaType.STRING },
               tradeoffMetrics: {
-                type: Type.OBJECT,
+                type: SchemaType.OBJECT,
                 properties: {
-                  performanceScore: { type: Type.NUMBER },
-                  costEfficiencyScore: { type: Type.NUMBER },
-                  carbonEfficiencyScore: { type: Type.NUMBER }
+                  performanceScore: { type: SchemaType.NUMBER },
+                  costEfficiencyScore: { type: SchemaType.NUMBER },
+                  carbonEfficiencyScore: { type: SchemaType.NUMBER }
                 }
               },
               recommendations: {
-                type: Type.ARRAY,
+                type: SchemaType.ARRAY,
                 items: {
-                  type: Type.OBJECT,
+                  type: SchemaType.OBJECT,
                   properties: {
-                    title: { type: Type.STRING },
-                    gain: { type: Type.STRING },
-                    reasoning: { type: Type.STRING },
-                    category: { type: Type.STRING, enum: ["High", "Medium", "Exploratory"] }
+                    title: { type: SchemaType.STRING },
+                    gain: { type: SchemaType.STRING },
+                    reasoning: { type: SchemaType.STRING },
+                    category: { type: SchemaType.STRING, format: "enum", enum: ["High", "Medium", "Exploratory"] }
                   }
                 }
               },
-              optimizedCode: { type: Type.STRING },
-              breakdown: {
-                type: Type.ARRAY,
-                items: {
-                  type: Type.OBJECT,
-                  properties: {
-                    component: { type: Type.STRING },
-                    percentage: { type: Type.NUMBER },
-                    joules: { type: Type.NUMBER },
-                    color: { type: Type.STRING }
-                  }
-                }
-              }
             }
           }
         }
       });
 
       // Tool Execution Loop to handle multi-turn function calls
-      let currentMessage: any[] = parts;
+      let currentMessage: any = parts; // startChat usually takes history, but sendMessage takes parts
+      // Actually with startChat, we send the message.
+      // But we need to handle the initial message.
+      // If we use startChat, the first message is sent via sendMessage.
+      
       let finalJsonText = "";
       let keepGoing = true;
 
       while (keepGoing) {
         keepGoing = false; // Default to stop unless we find tool calls
         
-        const result = await chat.sendMessageStream({ message: currentMessage });
+        const result = await chat.sendMessageStream(currentMessage);
         let accumulatedText = "";
         let toolCalls: any[] = [];
         
-        for await (const chunk of result) {
-            const text = chunk.text || "";
+        for await (const chunk of result.stream) {
+            const text = chunk.text(); // chunk.text() is a function in Web SDK
             accumulatedText += text;
             finalJsonText += text; // Keep adding to final for the JSON parse step
 
             // Pass streaming text to UI (filtering out system tags)
-            // P0-2: Updated Regex to be more flexible with spaces
             const phaseRegex = /\[\[PHASE:\s*(.*?)\]\]/;
             
             const match = text.match(phaseRegex);
@@ -325,8 +319,10 @@ export const analyzeAndOptimizeStream = async (
             }
 
             // Check for tool calls in this chunk
-            if (chunk.functionCalls) {
-              toolCalls.push(...chunk.functionCalls);
+            // Web SDK: chunk.functionCalls() returns array of calls
+            const calls = chunk.functionCalls();
+            if (calls && calls.length > 0) {
+              toolCalls.push(...calls);
             }
         }
         
@@ -345,8 +341,6 @@ export const analyzeAndOptimizeStream = async (
                     
                     // Simple local logic using our map
                     const intensity = REGION_CARBON_INTENSITY[region] || REGION_CARBON_INTENSITY['global'] || 450;
-                    // Formula: (Joules / 3,600,000) * Intensity(g/kWh)
-                    // 1 kWh = 3.6e6 Joules
                     const kwh = joules / 3600000;
                     const grams = kwh * intensity;
                     
@@ -355,17 +349,17 @@ export const analyzeAndOptimizeStream = async (
                     onChunk(`\n> [Tool] Calculating Carbon: ${joules.toFixed(2)}J @ ${region} (${intensity}g/kWh) = ${grams.toFixed(4)}g CO2\n`);
                     
                     functionResponses.push({
-                        id: call.id,
-                        name: call.name,
-                        response: { result: response }
+                        functionResponse: {
+                            name: call.name,
+                            response: { result: response }
+                        }
                     });
                 }
             }
             
             // Prepare the response message for the next turn
-            currentMessage = functionResponses.map(fr => ({
-               functionResponse: fr
-            }));
+            // In Web SDK, we send the function responses back
+            currentMessage = functionResponses;
         }
       }
 

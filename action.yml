@@ -1,0 +1,12 @@
+name: 'EcoCompute AI Gatekeeper'
+description: 'Stop expensive AI code before it merges.'
+inputs:
+  gemini_key:
+    description: 'Your Gemini API Key'
+    required: true
+  github_token:
+    description: 'GitHub Token for PR comments'
+    required: true
+runs:
+  using: 'node20'
+  main: 'action-dist/index.js'
