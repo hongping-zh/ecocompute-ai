@@ -1,0 +1,69 @@
+\relax 
+\providecommand\hyper@newdestlabel[2]{}
+\providecommand\HyField@AuxAddToFields[1]{}
+\providecommand\HyField@AuxAddToCoFields[2]{}
+\citation{strubell2019energy}
+\citation{patterson2021carbon}
+\citation{dettmers2023qlora}
+\citation{strubell2019energy}
+\citation{henderson2020towards}
+\citation{luccioni2022estimating}
+\citation{codecarbon}
+\citation{mlco2}
+\@writefile{toc}{\contentsline {section}{\numberline {1}Introduction}{1}{section.1}\protected@file@percent }
+\citation{frantar2022gptq}
+\citation{lin2023awq}
+\citation{dettmers2023qlora}
+\citation{samsi2023words}
+\citation{xu2024quantization}
+\citation{dettmers2023qlora}
+\@writefile{toc}{\contentsline {section}{\numberline {2}Related Work}{2}{section.2}\protected@file@percent }
+\@writefile{toc}{\contentsline {subsection}{\numberline {2.1}Green AI and Energy Measurement}{2}{subsection.2.1}\protected@file@percent }
+\@writefile{toc}{\contentsline {subsection}{\numberline {2.2}Quantization for Efficient Inference}{2}{subsection.2.2}\protected@file@percent }
+\@writefile{toc}{\contentsline {subsection}{\numberline {2.3}Energy Efficiency of Quantized Models}{2}{subsection.2.3}\protected@file@percent }
+\@writefile{toc}{\contentsline {section}{\numberline {3}Methodology}{2}{section.3}\protected@file@percent }
+\@writefile{toc}{\contentsline {subsection}{\numberline {3.1}Hardware Platform}{2}{subsection.3.1}\protected@file@percent }
+\@writefile{lot}{\contentsline {table}{\numberline {1}{\ignorespaces Test Environment}}{2}{table.1}\protected@file@percent }
+\newlabel{tab:hardware}{{1}{2}{Test Environment}{table.1}{}}
+\@writefile{toc}{\contentsline {subsection}{\numberline {3.2}Models}{2}{subsection.3.2}\protected@file@percent }
+\@writefile{toc}{\contentsline {subsection}{\numberline {3.3}Quantization Configuration}{2}{subsection.3.3}\protected@file@percent }
+\@writefile{lot}{\contentsline {table}{\numberline {2}{\ignorespaces Evaluated Models}}{3}{table.2}\protected@file@percent }
+\newlabel{tab:models}{{2}{3}{Evaluated Models}{table.2}{}}
+\@writefile{toc}{\contentsline {subsection}{\numberline {3.4}Energy Measurement}{3}{subsection.3.4}\protected@file@percent }
+\@writefile{toc}{\contentsline {subsection}{\numberline {3.5}Experimental Protocol}{3}{subsection.3.5}\protected@file@percent }
+\@writefile{toc}{\contentsline {section}{\numberline {4}Results}{3}{section.4}\protected@file@percent }
+\@writefile{toc}{\contentsline {subsection}{\numberline {4.1}Main Results}{3}{subsection.4.1}\protected@file@percent }
+\@writefile{lot}{\contentsline {table}{\numberline {3}{\ignorespaces Energy Efficiency Comparison: FP16 vs. 4-bit NF4 on RTX 5090}}{4}{table.3}\protected@file@percent }
+\newlabel{tab:main_results}{{3}{4}{Energy Efficiency Comparison: FP16 vs. 4-bit NF4 on RTX 5090}{table.3}{}}
+\@writefile{toc}{\contentsline {subsection}{\numberline {4.2}Key Observations}{4}{subsection.4.2}\protected@file@percent }
+\@writefile{toc}{\contentsline {subsection}{\numberline {4.3}Energy Efficiency Trend}{4}{subsection.4.3}\protected@file@percent }
+\@writefile{toc}{\contentsline {subsection}{\numberline {4.4}Power-Limit Experiment}{4}{subsection.4.4}\protected@file@percent }
+\@writefile{toc}{\contentsline {section}{\numberline {5}Analysis}{4}{section.5}\protected@file@percent }
+\@writefile{toc}{\contentsline {subsection}{\numberline {5.1}Why Does Quantization Hurt Small Models?}{4}{subsection.5.1}\protected@file@percent }
+\@writefile{lof}{\contentsline {figure}{\numberline {1}{\ignorespaces Energy consumption comparison: FP16 vs 4-bit NF4 on RTX 5090. Percentages indicate energy change from quantization. Red indicates increased energy consumption; green indicates savings.}}{5}{figure.1}\protected@file@percent }
+\newlabel{fig:energy_comparison}{{1}{5}{Energy consumption comparison: FP16 vs 4-bit NF4 on RTX 5090. Percentages indicate energy change from quantization. Red indicates increased energy consumption; green indicates savings}{figure.1}{}}
+\@writefile{toc}{\contentsline {subsection}{\numberline {5.2}RTX 5090 Characteristics}{5}{subsection.5.2}\protected@file@percent }
+\@writefile{lof}{\contentsline {figure}{\numberline {2}{\ignorespaces Energy efficiency change with model size. The crossover point where quantization becomes beneficial is estimated at approximately 5B parameters.}}{6}{figure.2}\protected@file@percent }
+\newlabel{fig:energy_trend}{{2}{6}{Energy efficiency change with model size. The crossover point where quantization becomes beneficial is estimated at approximately 5B parameters}{figure.2}{}}
+\@writefile{toc}{\contentsline {section}{\numberline {6}Discussion}{6}{section.6}\protected@file@percent }
+\@writefile{toc}{\contentsline {subsection}{\numberline {6.1}Implications for Green AI}{6}{subsection.6.1}\protected@file@percent }
+\@writefile{toc}{\contentsline {subsection}{\numberline {6.2}Practical Guidelines}{6}{subsection.6.2}\protected@file@percent }
+\@writefile{lot}{\contentsline {table}{\numberline {4}{\ignorespaces Deployment Recommendations for RTX 5090}}{6}{table.4}\protected@file@percent }
+\newlabel{tab:guidelines}{{4}{6}{Deployment Recommendations for RTX 5090}{table.4}{}}
+\@writefile{toc}{\contentsline {subsection}{\numberline {6.3}Limitations}{6}{subsection.6.3}\protected@file@percent }
+\bibstyle{plain}
+\bibcite{strubell2019energy}{1}
+\bibcite{patterson2021carbon}{2}
+\bibcite{dettmers2023qlora}{3}
+\@writefile{lof}{\contentsline {figure}{\numberline {3}{\ignorespaces Power consumption and throughput comparison. Despite lower power draw, 4-bit quantization's throughput penalty results in higher total energy for small models.}}{7}{figure.3}\protected@file@percent }
+\newlabel{fig:power_throughput}{{3}{7}{Power consumption and throughput comparison. Despite lower power draw, 4-bit quantization's throughput penalty results in higher total energy for small models}{figure.3}{}}
+\@writefile{toc}{\contentsline {section}{\numberline {7}Conclusion}{7}{section.7}\protected@file@percent }
+\bibcite{henderson2020towards}{4}
+\bibcite{luccioni2022estimating}{5}
+\bibcite{codecarbon}{6}
+\bibcite{mlco2}{7}
+\bibcite{frantar2022gptq}{8}
+\bibcite{lin2023awq}{9}
+\bibcite{samsi2023words}{10}
+\bibcite{xu2024quantization}{11}
+\gdef \@abspage@last{8}

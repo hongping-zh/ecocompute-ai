@@ -1,0 +1,14 @@
+action-dist
+api
+bin
+cli
+cli-dist
+components
+dist
+ecocompute
+joss_paper
+node_modules
+paper
+scripts
+services
+test_scans

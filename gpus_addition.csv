@@ -1,0 +1,3 @@
+RTX 5090,gpu,575,209.2,209.2,363.8,363.8,32,https://www.nvidia.com/en-us/geforce/graphics-cards/50-series/rtx-5090/
+H100 PCIe,gpu,350,51,1979,145.7,5654.3,80,https://www.nvidia.com/en-us/data-center/h100/
+H100 SXM5,gpu,700,67,1979,95.7,2827.1,80,https://www.nvidia.com/en-us/data-center/h100/

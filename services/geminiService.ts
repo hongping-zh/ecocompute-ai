@@ -1,8 +1,9 @@
-import { GoogleGenerativeAI, SchemaType } from "@google/generative-ai";
+import { SchemaType } from "@google/generative-ai";
 import { AnalysisResult, HardwareProfile } from "../types";
 import { analyzeCodeStatic } from "./staticAnalyzer";
 
 // Initialize Gemini Client
+
 // P0-1: Prioritize GEMINI_API_KEY for consistency, fallback to API_KEY
 // const apiKey = process.env.GEMINI_API_KEY || process.env.API_KEY;
 
@@ -91,7 +92,6 @@ async function processImageForGemini(dataUrl: string): Promise<string> {
 }
 
 export const analyzeAndOptimizeStream = async (
-  apiKey: string,
   code: string,
   hardware: HardwareProfile,
   onChunk: (text: string) => void,
@@ -99,17 +99,14 @@ export const analyzeAndOptimizeStream = async (
   scope: 'snippet' | 'module' = 'snippet',
   onPhaseChange?: (phase: string) => void
 ): Promise<AnalysisResult> => {
-
-  if (!apiKey) {
-      throw new GeminiError("No API Key provided. Please set your Gemini API Key in Settings.", false);
-  }
-
-  const genAI = new GoogleGenerativeAI(apiKey);
+  onPhaseChange?.('ANALYSIS');
+  onChunk('> [System] Connecting to EcoCompute API...\n');
   
   // Step 1: Run Static Analysis (Enhanced P1-1)
   const staticData = analyzeCodeStatic(code);
   const estimatedGFlops = staticData.estimatedFlops;
   const layerSummary = JSON.stringify(staticData.layerCounts);
+  
   // Flatten highlights for the prompt
   const structuralHighlights = staticData.structuralHighlights.map(h => h.label).join(", ");
 
@@ -189,234 +186,53 @@ export const analyzeAndOptimizeStream = async (
     parts.unshift(visionPart);
   }
 
-  // P1-New: Add Custom Tool for Carbon Calculation
-  // Note: @google/generative-ai defines tools differently in model config, not as separate objects passed to startChat usually,
-  // but it supports 'tools' in model config.
-  // We need to check if 'googleSearch' and 'codeExecution' are supported in the Web SDK.
-  // They are supported in Gemini 1.5 Pro / Flash.
-  const tools = [
-    { googleSearch: {} },
-    { codeExecution: {} },
-    {
-      functionDeclarations: [{
-        name: "calculate_carbon_footprint",
-        description: "Calculate carbon footprint based on energy consumption and region.",
-        parameters: {
-          type: SchemaType.OBJECT,
-          properties: {
-            energyJoules: { type: SchemaType.NUMBER, description: "Total energy consumed in Joules" },
-            region: { type: SchemaType.STRING, description: "Data center region (e.g., us-central1)" }
-          },
-          required: ["energyJoules", "region"]
-        }
-      }]
-    }
-  ];
-
   return retryOperation(async () => {
     try {
-      const model = genAI.getGenerativeModel({
-        model: "gemini-1.5-pro", // Switch to 1.5 Pro which is stable for Web SDK
-        systemInstruction: systemInstruction,
-        tools: tools as any, // Type cast if needed
-      });
-      
-      const chat = model.startChat({
-        generationConfig: {
-          responseMimeType: "application/json",
-          responseSchema: {
-            type: SchemaType.OBJECT,
-            properties: {
-              // P0-2: Real Steps in Reasoning Trace
-              reasoning_trace: { type: SchemaType.STRING, description: "Structured technical audit including Search and Code Execution results." },
-              
-              // P0-3: Explainability Fields
-              assumptions: { type: SchemaType.ARRAY, items: { type: SchemaType.STRING }, description: "List technical assumptions (e.g., 'Batch Size=1', 'FP16', 'Utilization=85%', 'Duration=24h')" },
-              citations: { type: SchemaType.ARRAY, items: { type: SchemaType.STRING }, description: "Sources for data" },
-              energy_model: { type: SchemaType.STRING, description: "How Joules were calculated from GFLOPs" },
-              
-              originalEnergyJoules: { type: SchemaType.NUMBER },
-              optimizedEnergyJoules: { type: SchemaType.NUMBER },
-              improvementPercentage: { type: SchemaType.NUMBER },
-              carbonSavedGrams: { type: SchemaType.NUMBER },
-              estimatedHourlyCost: { type: SchemaType.NUMBER },
-              costSavingsPer1MInference: { type: SchemaType.NUMBER },
-              confidenceScore: { type: SchemaType.NUMBER },
-              uncertaintyFactors: { type: SchemaType.ARRAY, items: { type: SchemaType.STRING } },
-              
-              benchmarkData: {
-                type: SchemaType.OBJECT,
-                properties: {
-                  found: { type: SchemaType.BOOLEAN },
-                  source: { type: SchemaType.STRING },
-                  device: { type: SchemaType.STRING },
-                  metric: { type: SchemaType.STRING },
-                  value: { type: SchemaType.STRING }
-                },
-                required: ["found", "source", "device", "metric", "value"]
-              },
+      const region = hardware.region || 'global';
+      const intensity = REGION_CARBON_INTENSITY[region] || REGION_CARBON_INTENSITY['global'] || 450;
+      onChunk(`> [System] Static analysis: ~${estimatedGFlops} GFLOPs, Layers=${layerSummary}, Region=${region} (${intensity}g/kWh)\n`);
+      onPhaseChange?.('STRATEGY');
+      onChunk('> [System] Requesting optimization from server...\n');
 
-              strategyAnalysis: { type: SchemaType.STRING },
-              bottleneckAnalysis: { type: SchemaType.STRING },
-              impactAnalogy: { type: SchemaType.STRING },
-              tradeoffMetrics: {
-                type: SchemaType.OBJECT,
-                properties: {
-                  performanceScore: { type: SchemaType.NUMBER },
-                  costEfficiencyScore: { type: SchemaType.NUMBER },
-                  carbonEfficiencyScore: { type: SchemaType.NUMBER }
-                }
-              },
-              recommendations: {
-                type: SchemaType.ARRAY,
-                items: {
-                  type: SchemaType.OBJECT,
-                  properties: {
-                    title: { type: SchemaType.STRING },
-                    gain: { type: SchemaType.STRING },
-                    reasoning: { type: SchemaType.STRING },
-                    category: { type: SchemaType.STRING, format: "enum", enum: ["High", "Medium", "Exploratory"] }
-                  }
-                }
-              },
-            }
-          }
-        }
+      const resp = await fetch('/api/gemini', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({
+          code,
+          hardware,
+          scope,
+          imagePngBase64: visionPart?.inlineData?.data || undefined,
+        }),
       });
 
-      // Tool Execution Loop to handle multi-turn function calls
-      let currentMessage: any = parts; // startChat usually takes history, but sendMessage takes parts
-      // Actually with startChat, we send the message.
-      // But we need to handle the initial message.
-      // If we use startChat, the first message is sent via sendMessage.
-      
-      let finalJsonText = "";
-      let keepGoing = true;
-
-      while (keepGoing) {
-        keepGoing = false; // Default to stop unless we find tool calls
-        
-        const result = await chat.sendMessageStream(currentMessage);
-        let accumulatedText = "";
-        let toolCalls: any[] = [];
-        
-        for await (const chunk of result.stream) {
-            const text = chunk.text(); // chunk.text() is a function in Web SDK
-            accumulatedText += text;
-            finalJsonText += text; // Keep adding to final for the JSON parse step
-
-            // Pass streaming text to UI (filtering out system tags)
-            const phaseRegex = /\[\[PHASE:\s*(.*?)\]\]/;
-            
-            const match = text.match(phaseRegex);
-            if (match && onPhaseChange) {
-              onPhaseChange(match[1].trim());
-            }
-
-            const cleanChunk = text.replace(/\[\[PHASE:.*?\]\]/g, '');
-            if (cleanChunk) {
-              onChunk(cleanChunk);
-            }
-
-            // Check for tool calls in this chunk
-            // Web SDK: chunk.functionCalls() returns array of calls
-            const calls = chunk.functionCalls();
-            if (calls && calls.length > 0) {
-              toolCalls.push(...calls);
-            }
-        }
-        
-        // Handle Tool Execution
-        if (toolCalls.length > 0) {
-            keepGoing = true;
-            finalJsonText = ""; // Reset JSON text if we are in a tool loop (the final JSON comes after)
-            
-            const functionResponses = [];
-            
-            for (const call of toolCalls) {
-                if (call.name === "calculate_carbon_footprint") {
-                    const args = call.args as any;
-                    const joules = args.energyJoules || 0;
-                    const region = args.region || "global";
-                    
-                    // Simple local logic using our map
-                    const intensity = REGION_CARBON_INTENSITY[region] || REGION_CARBON_INTENSITY['global'] || 450;
-                    const kwh = joules / 3600000;
-                    const grams = kwh * intensity;
-                    
-                    const response = { carbonGrams: grams };
-                    
-                    onChunk(`\n> [Tool] Calculating Carbon: ${joules.toFixed(2)}J @ ${region} (${intensity}g/kWh) = ${grams.toFixed(4)}g CO2\n`);
-                    
-                    functionResponses.push({
-                        functionResponse: {
-                            name: call.name,
-                            response: { result: response }
-                        }
-                    });
-                }
-            }
-            
-            // Prepare the response message for the next turn
-            // In Web SDK, we send the function responses back
-            currentMessage = functionResponses;
-        }
+      if (!resp.ok) {
+        const txt = await resp.text();
+        throw new GeminiError(txt || `Request failed (${resp.status})`, resp.status >= 500);
       }
 
-      if (!finalJsonText) throw new GeminiError("Model failed to generate a JSON response.", true);
-      
-      // P0-2: Ultra-Safe JSON Extraction
-      // 1. Strip all phase tags globally first (Robust Regex)
-      let cleanText = finalJsonText.replace(/\[\[PHASE:[\s\S]*?\]\]/g, '');
-      
-      // 2. Find the first valid '{' and last valid '}' to isolate JSON
-      const firstBrace = cleanText.indexOf('{');
-      const lastBrace = cleanText.lastIndexOf('}');
-      
-      if (firstBrace !== -1 && lastBrace !== -1 && lastBrace > firstBrace) {
-          cleanText = cleanText.substring(firstBrace, lastBrace + 1);
-      } else {
-          cleanText = cleanText.trim();
-      }
-      
-      try {
-        return JSON.parse(cleanText) as AnalysisResult;
-      } catch (e) {
-        console.error("Malformed JSON:", cleanText);
-        throw new GeminiError("Failed to parse analysis report. The model output was malformed.", false);
-      }
-
+      const data = (await resp.json()) as AnalysisResult;
+      onChunk('> [System] Optimization response received.\n');
+      return data;
     } catch (error: any) {
-      console.error("Gemini Failure:", error);
+      console.error('Gemini Failure:', error);
 
-      let errorMsg = error?.message || "Unknown API Error";
-      let status = error?.status || error?.code;
-
-      try {
-        if (typeof errorMsg === 'string' && errorMsg.trim().startsWith('{')) {
-          const parsed = JSON.parse(errorMsg);
-          if (parsed?.error) {
-            errorMsg = parsed.error.message || errorMsg;
-            status = parsed.error.code || status;
-          }
-        }
-      } catch (e) {
-      }
+      const rawMsg = typeof error?.message === 'string' ? error.message : String(error);
+      const status = error?.status ?? error?.code;
 
       if (
         status === 429 ||
-        errorMsg.includes("429") ||
-        errorMsg.includes("quota") ||
-        errorMsg.includes("RESOURCE_EXHAUSTED")
+        rawMsg.includes('429') ||
+        rawMsg.toLowerCase().includes('quota') ||
+        rawMsg.includes('RESOURCE_EXHAUSTED')
       ) {
         throw new GeminiError(
-          "Gemini Quota Exceeded (429). Please wait a moment, check your plan, or use a paid API Key.",
+          'Gemini Quota Exceeded (429). Please wait a moment or try again later.',
           true
         );
       }
 
       if (error instanceof GeminiError) throw error;
-      throw new GeminiError(errorMsg, true);
+      throw new GeminiError(rawMsg || 'Unknown API Error', true);
     }
   });
 };

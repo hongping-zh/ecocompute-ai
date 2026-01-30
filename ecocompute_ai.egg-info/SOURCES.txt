@@ -1,0 +1,15 @@
+LICENSE
+README.md
+pyproject.toml
+setup.py
+ecocompute/__init__.py
+ecocompute/auditor.py
+ecocompute/hf_callback.py
+ecocompute/utils.py
+ecocompute_ai.egg-info/PKG-INFO
+ecocompute_ai.egg-info/SOURCES.txt
+ecocompute_ai.egg-info/dependency_links.txt
+ecocompute_ai.egg-info/requires.txt
+ecocompute_ai.egg-info/top_level.txt
+test_scans/dummy_model.py
+tests/test_auditor.py

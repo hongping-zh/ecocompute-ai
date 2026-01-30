@@ -1,0 +1,17 @@
+# Core dependencies
+pynvml>=11.0.0
+
+# Optional: Hugging Face integration
+# transformers>=4.20.0
+
+# Optional: Weights & Biases logging
+# wandb>=0.12.0
+
+# Optional: PyTorch (for GPU inference)
+# torch>=2.0.0
+
+# Development dependencies
+# pytest>=7.0.0
+# pytest-cov>=3.0.0
+# black>=22.0.0
+# flake8>=4.0.0
