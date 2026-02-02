@@ -1,0 +1,40 @@
+{
+  "platforms": {
+    "rtx5090": {
+      "nvml_sampling_frequency_hz": 10,
+      "nvml_sampling_interval_ms": 100,
+      "nvidia_driver_version": "565.90",
+      "cuda_version": "12.7",
+      "bitsandbytes_version": "0.45.0",
+      "pytorch_version": "2.5.1+cu127",
+      "transformers_version": "4.47.0",
+      "operating_system": "Windows 11 23H2",
+      "kernel_version": "NT 10.0.22631",
+      "idle_power_watts": 45.2,
+      "ambient_temperature_celsius": 22,
+      "ambient_temperature_tolerance": 1
+    },
+    "t4": {
+      "nvml_sampling_frequency_hz": 10,
+      "nvml_sampling_interval_ms": 100,
+      "nvidia_driver_version": "535.104.05",
+      "cuda_version": "12.2",
+      "bitsandbytes_version": "0.45.0",
+      "pytorch_version": "2.1.0+cu122",
+      "transformers_version": "4.47.0",
+      "operating_system": "Ubuntu 22.04 LTS",
+      "kernel_version": "5.15.0-91-generic",
+      "idle_power_watts": 12.8,
+      "ambient_temperature_celsius": 25,
+      "ambient_temperature_tolerance": 2
+    }
+  },
+  "benchmark_config": {
+    "warmup_iterations": 3,
+    "measurement_iterations": 10,
+    "thermal_stabilization_seconds": 300,
+    "prompt_tokens": 128,
+    "max_new_tokens": 512,
+    "batch_size": 1
+  }
+}
