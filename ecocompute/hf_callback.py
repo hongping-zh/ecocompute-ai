@@ -18,13 +18,13 @@ from .auditor import EnergyAuditor, NVML_AVAILABLE
 class EcoComputeCallback(TrainerCallback):
     """
     Hugging Face TrainerCallback for real-time energy logging during training.
-    
+
     Automatically tracks energy consumption per epoch and logs metrics.
-    
+
     Example:
         >>> from transformers import Trainer
         >>> from ecocompute import EcoComputeCallback
-        >>> 
+        >>>
         >>> callback = EcoComputeCallback(gpu_index=0, log_to_wandb=True)
         >>> trainer = Trainer(
         ...     model=model,
@@ -33,7 +33,7 @@ class EcoComputeCallback(TrainerCallback):
         ... )
         >>> trainer.train()
     """
-    
+
     def __init__(
         self,
         gpu_index: int = 0,
@@ -43,7 +43,7 @@ class EcoComputeCallback(TrainerCallback):
     ):
         """
         Initialize the EcoCompute callback.
-        
+
         Args:
             gpu_index: Index of the GPU to monitor
             sample_interval_ms: Power sampling interval in milliseconds
@@ -55,55 +55,55 @@ class EcoComputeCallback(TrainerCallback):
                 "transformers is required for EcoComputeCallback. "
                 "Install it with: pip install transformers"
             )
-        
+
         if not NVML_AVAILABLE:
             raise ImportError(
                 "pynvml is required for EcoComputeCallback. "
                 "Install it with: pip install pynvml"
             )
-        
+
         self.gpu_index = gpu_index
         self.sample_interval_ms = sample_interval_ms
         self.log_to_wandb = log_to_wandb
         self.carbon_intensity = carbon_intensity_gco2_kwh
-        
+
         self._auditor: Optional[EnergyAuditor] = None
         self._epoch_start_time: float = 0.0
         self._total_energy: float = 0.0
         self._total_carbon: float = 0.0
         self._epoch_metrics: list = []
-        
-    def on_train_begin(self, args: "TrainingArguments", state: "TrainerState", 
+
+    def on_train_begin(self, args: "TrainingArguments", state: "TrainerState",
                        control: "TrainerControl", **kwargs):
         """Called at the beginning of training."""
         self._total_energy = 0.0
         self._total_carbon = 0.0
         self._epoch_metrics = []
         print(f"[EcoCompute] Starting energy monitoring on GPU {self.gpu_index}")
-        
+
     def on_epoch_begin(self, args: "TrainingArguments", state: "TrainerState",
                        control: "TrainerControl", **kwargs):
         """Called at the beginning of each epoch."""
         self._auditor = EnergyAuditor(self.gpu_index, self.sample_interval_ms)
         self._auditor.start()
         self._epoch_start_time = time.time()
-        
+
     def on_epoch_end(self, args: "TrainingArguments", state: "TrainerState",
                      control: "TrainerControl", **kwargs):
         """Called at the end of each epoch."""
         if self._auditor is None:
             return
-        
+
         energy, avg_power, peak_power = self._auditor.stop()
         epoch_time = time.time() - self._epoch_start_time
-        
+
         # Calculate carbon footprint
         energy_kwh = energy / 3600000  # J to kWh
         carbon_g = energy_kwh * self.carbon_intensity
-        
+
         self._total_energy += energy
         self._total_carbon += carbon_g
-        
+
         metrics = {
             "epoch": state.epoch,
             "energy_j": energy,
@@ -113,11 +113,11 @@ class EcoComputeCallback(TrainerCallback):
             "carbon_g": carbon_g,
         }
         self._epoch_metrics.append(metrics)
-        
+
         print(f"[EcoCompute] Epoch {state.epoch:.0f}: "
               f"Energy={energy:.1f}J, Avg Power={avg_power:.1f}W, "
               f"Carbon={carbon_g:.2f}g CO2e")
-        
+
         # Log to W&B if enabled
         if self.log_to_wandb:
             try:
@@ -130,20 +130,20 @@ class EcoComputeCallback(TrainerCallback):
                 })
             except ImportError:
                 pass
-        
+
         self._auditor = None
-        
+
     def on_train_end(self, args: "TrainingArguments", state: "TrainerState",
                      control: "TrainerControl", **kwargs):
         """Called at the end of training."""
-        print(f"\n[EcoCompute] Training Complete")
+        print("\n[EcoCompute] Training Complete")
         print(f"  Total Energy: {self._total_energy:.1f} J ({self._total_energy/3600:.2f} Wh)")
         print(f"  Total Carbon: {self._total_carbon:.2f} g CO2e")
-        
+
     def get_summary(self) -> Dict[str, Any]:
         """
         Get summary of energy metrics.
-        
+
         Returns:
             Dictionary with total energy, carbon, and per-epoch metrics
         """

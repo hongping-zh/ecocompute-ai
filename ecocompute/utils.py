@@ -44,12 +44,12 @@ def calculate_carbon_footprint(
 ) -> Dict[str, float]:
     """
     Calculate carbon footprint from energy consumption.
-    
+
     Args:
         energy_joules: Energy consumption in Joules
         region: Cloud region for carbon intensity lookup
         custom_intensity: Custom carbon intensity (gCO2/kWh), overrides region
-        
+
     Returns:
         Dictionary with carbon metrics
     """
@@ -58,17 +58,17 @@ def calculate_carbon_footprint(
         intensity = custom_intensity
     else:
         intensity = REGION_CARBON_INTENSITY.get(region, REGION_CARBON_INTENSITY["default"])
-    
+
     # Convert Joules to kWh
     energy_kwh = energy_joules / 3600000
-    
+
     # Calculate carbon
     carbon_g = energy_kwh * intensity
     carbon_kg = carbon_g / 1000
-    
+
     # Equivalent metrics
     km_driven = carbon_kg / 0.154  # Average car: 154g CO2/km
-    
+
     return {
         "energy_j": energy_joules,
         "energy_kwh": energy_kwh,
@@ -89,9 +89,9 @@ def estimate_training_cost(
 ) -> Dict[str, float]:
     """
     Estimate training cost, time, and carbon footprint.
-    
+
     Uses Chinchilla scaling law: FLOPs ≈ 6 * N * D
-    
+
     Args:
         model_params: Number of model parameters (e.g., 1.3e9 for 1.3B)
         training_tokens: Number of training tokens (e.g., 100e9 for 100B)
@@ -99,30 +99,30 @@ def estimate_training_cost(
         num_gpus: Number of GPUs
         cloud_region: Cloud region for carbon intensity
         utilization: GPU utilization factor (0-1)
-        
+
     Returns:
         Dictionary with cost, time, and carbon estimates
     """
     # Get GPU specs
     gpu = GPU_SPECS.get(gpu_type, GPU_SPECS["A100-80GB"])
     price = CLOUD_PRICING.get(gpu_type, 2.50)
-    
+
     # Calculate FLOPs (Chinchilla: 6 * N * D)
     total_flops = 6 * model_params * training_tokens
-    
+
     # Calculate time
     effective_tflops = gpu["tflops_fp16"] * 1e12 * utilization
     training_seconds = total_flops / (effective_tflops * num_gpus)
     training_hours = training_seconds / 3600
     training_days = training_hours / 24
-    
+
     # Calculate cost
     total_cost = training_hours * num_gpus * price
-    
+
     # Calculate energy and carbon
     energy_joules = gpu["tdp"] * num_gpus * training_seconds
     carbon = calculate_carbon_footprint(energy_joules, cloud_region)
-    
+
     return {
         "model_params": model_params,
         "training_tokens": training_tokens,
@@ -141,10 +141,10 @@ def estimate_training_cost(
 def format_training_estimate(estimate: Dict[str, float]) -> str:
     """
     Format training estimate as a readable string.
-    
+
     Args:
         estimate: Dictionary from estimate_training_cost()
-        
+
     Returns:
         Formatted string
     """
