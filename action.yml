@@ -1,5 +1,5 @@
-name: 'EcoCompute AI Gatekeeper'
-description: 'Stop expensive AI code before it merges.'
+name: 'EcoCompute Energy Auditor'
+description: 'GitHub Marketplace Bot — Auto-review PRs for GPU/LLM energy waste. 93+ real GPU measurements. Zero config.'
 inputs:
   gemini_key:
     description: 'Your Gemini API Key'
