@@ -1,0 +1,4 @@
+model_name,config,precision,llm_int8_threshold,perplexity,ppl_delta_vs_fp16_pct,energy_delta_vs_fp16_pct,gpu_memory_gb,total_tokens,avg_loss,elapsed_time_seconds
+01-ai/Yi-1.5-6B,fp16,FP16,,11.1639,0.00,0.0,12.12,7388,2.4128,2797.1
+01-ai/Yi-1.5-6B,int8_default,INT8,6.0,11.2010,+0.33,+32.7,6.70,7388,2.4161,13.5
+01-ai/Yi-1.5-6B,int8_pure,INT8,0.0,13.9972,+25.38,-3.1,6.70,7388,2.6389,10.9

@@ -1,0 +1,96 @@
+{
+  "experiment_id": "ppl_yi1.5_6b_wikitext2_20260224",
+  "purpose": "Accuracy assessment of INT8 quantization configurations via perplexity measurement",
+  "date": "2026-02-24",
+  "author": "Hongping Zhang",
+
+  "hardware": {
+    "gpu": "NVIDIA GeForce RTX 4090D",
+    "architecture": "Ada Lovelace",
+    "vram": "24GB GDDR6X",
+    "provider": "AutoDL",
+    "instance_id": "autodl-container-47fd48955e-c803d9ed"
+  },
+
+  "software": {
+    "pytorch": "2.4.1+cu121",
+    "cuda": "12.1",
+    "transformers": "4.47.0",
+    "bitsandbytes": "latest",
+    "datasets": "latest"
+  },
+
+  "model": {
+    "name": "01-ai/Yi-1.5-6B",
+    "parameters": "6B",
+    "architecture": "Yi (Transformer decoder)"
+  },
+
+  "dataset": {
+    "name": "wikitext",
+    "subset": "wikitext-2-raw-v1",
+    "split": "test",
+    "num_samples": 50,
+    "filter": "text length > 100 characters",
+    "max_length": 512
+  },
+
+  "results": {
+    "fp16": {
+      "precision": "FP16",
+      "quantization": null,
+      "llm_int8_threshold": null,
+      "perplexity": 11.1639,
+      "total_tokens": 7388,
+      "avg_loss": 2.4128,
+      "gpu_memory_gb": 12.12,
+      "elapsed_time_seconds": 2797.1
+    },
+    "int8_default": {
+      "precision": "INT8",
+      "quantization": "bitsandbytes",
+      "llm_int8_threshold": 6.0,
+      "perplexity": 11.2010,
+      "total_tokens": 7388,
+      "avg_loss": 2.4161,
+      "gpu_memory_gb": 6.70,
+      "elapsed_time_seconds": 13.5
+    },
+    "int8_pure": {
+      "precision": "INT8",
+      "quantization": "bitsandbytes",
+      "llm_int8_threshold": 0.0,
+      "perplexity": 13.9972,
+      "total_tokens": 7388,
+      "avg_loss": 2.6389,
+      "gpu_memory_gb": 6.70,
+      "elapsed_time_seconds": 10.9
+    }
+  },
+
+  "analysis": {
+    "int8_default_vs_fp16": {
+      "ppl_delta_percent": 0.33,
+      "interpretation": "Negligible accuracy impact (<1%)",
+      "energy_delta_vs_fp16_percent": 32.7,
+      "recommendation": "Safe for production — accuracy preserved at energy cost"
+    },
+    "int8_pure_vs_fp16": {
+      "ppl_delta_percent": 25.38,
+      "interpretation": "Significant accuracy degradation (>2%)",
+      "energy_delta_vs_fp16_percent": -3.1,
+      "recommendation": "NOT recommended — marginal energy savings do not justify accuracy loss"
+    }
+  },
+
+  "key_finding": "Default LLM.int8() (threshold=6.0) preserves accuracy (+0.33% PPL) at the cost of higher energy consumption (+32.7%). Pure INT8 (threshold=0.0) reduces energy marginally (-3.1%) but causes unacceptable accuracy degradation (+25.38% PPL). This validates the bitsandbytes design philosophy of prioritizing accuracy preservation.",
+
+  "related_issues": [
+    "https://github.com/bitsandbytes-foundation/bitsandbytes/issues/1867"
+  ],
+
+  "citation": {
+    "repository": "https://github.com/hongping-zh/ecocompute-ai",
+    "dashboard": "https://hongping-zh.github.io/ecocompute-dynamic-eval/"
+  }
+}
