@@ -1,0 +1,87 @@
+{
+  "model": "/root/autodl-tmp/.cache/mistral_7b",
+  "config": "nf4",
+  "gpu": "A800-SXM4-80GB",
+  "n_runs": 10,
+  "results": {
+    "throughput_mean": 27.15,
+    "throughput_std": 0.21,
+    "energy_per_1k_tokens_mean": 4222.4,
+    "energy_per_1k_tokens_std": 67.74,
+    "power_mean": 115.94,
+    "power_std": 2.05,
+    "cv_percent": 1.6
+  },
+  "raw_runs": [
+    {
+      "run": 1,
+      "tokens": 241,
+      "throughput_tok_s": 27.32,
+      "energy_per_1k_tokens": 4292.53,
+      "avg_power_w": 118.68
+    },
+    {
+      "run": 2,
+      "tokens": 241,
+      "throughput_tok_s": 27.04,
+      "energy_per_1k_tokens": 4297.07,
+      "avg_power_w": 117.48
+    },
+    {
+      "run": 3,
+      "tokens": 241,
+      "throughput_tok_s": 27.03,
+      "energy_per_1k_tokens": 4190.95,
+      "avg_power_w": 114.58
+    },
+    {
+      "run": 4,
+      "tokens": 241,
+      "throughput_tok_s": 27.33,
+      "energy_per_1k_tokens": 4303.7,
+      "avg_power_w": 118.75
+    },
+    {
+      "run": 5,
+      "tokens": 241,
+      "throughput_tok_s": 27.03,
+      "energy_per_1k_tokens": 4243.11,
+      "avg_power_w": 115.97
+    },
+    {
+      "run": 6,
+      "tokens": 241,
+      "throughput_tok_s": 26.73,
+      "energy_per_1k_tokens": 4170.99,
+      "avg_power_w": 112.74
+    },
+    {
+      "run": 7,
+      "tokens": 241,
+      "throughput_tok_s": 27.03,
+      "energy_per_1k_tokens": 4248.54,
+      "avg_power_w": 116.12
+    },
+    {
+      "run": 8,
+      "tokens": 241,
+      "throughput_tok_s": 27.34,
+      "energy_per_1k_tokens": 4103.22,
+      "avg_power_w": 113.51
+    },
+    {
+      "run": 9,
+      "tokens": 241,
+      "throughput_tok_s": 27.34,
+      "energy_per_1k_tokens": 4150.02,
+      "avg_power_w": 114.78
+    },
+    {
+      "run": 10,
+      "tokens": 241,
+      "throughput_tok_s": 27.34,
+      "energy_per_1k_tokens": 4223.85,
+      "avg_power_w": 116.77
+    }
+  ]
+}

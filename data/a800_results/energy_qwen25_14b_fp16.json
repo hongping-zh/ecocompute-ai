@@ -1,0 +1,87 @@
+{
+  "model": "/root/autodl-tmp/.cache/qwen25_14b",
+  "config": "fp16",
+  "gpu": "A800-SXM4-80GB",
+  "n_runs": 10,
+  "results": {
+    "throughput_mean": 29.36,
+    "throughput_std": 0.33,
+    "energy_per_1k_tokens_mean": 7359.98,
+    "energy_per_1k_tokens_std": 57.56,
+    "power_mean": 218.61,
+    "power_std": 2.79,
+    "cv_percent": 0.78
+  },
+  "raw_runs": [
+    {
+      "run": 1,
+      "tokens": 259,
+      "throughput_tok_s": 29.11,
+      "energy_per_1k_tokens": 7252.4,
+      "avg_power_w": 215.57
+    },
+    {
+      "run": 2,
+      "tokens": 259,
+      "throughput_tok_s": 29.38,
+      "energy_per_1k_tokens": 7340.67,
+      "avg_power_w": 218.14
+    },
+    {
+      "run": 3,
+      "tokens": 259,
+      "throughput_tok_s": 29.05,
+      "energy_per_1k_tokens": 7353.73,
+      "avg_power_w": 215.35
+    },
+    {
+      "run": 4,
+      "tokens": 259,
+      "throughput_tok_s": 29.05,
+      "energy_per_1k_tokens": 7361.67,
+      "avg_power_w": 215.91
+    },
+    {
+      "run": 5,
+      "tokens": 259,
+      "throughput_tok_s": 29.38,
+      "energy_per_1k_tokens": 7328.27,
+      "avg_power_w": 217.14
+    },
+    {
+      "run": 6,
+      "tokens": 259,
+      "throughput_tok_s": 29.38,
+      "energy_per_1k_tokens": 7358.12,
+      "avg_power_w": 218.71
+    },
+    {
+      "run": 7,
+      "tokens": 259,
+      "throughput_tok_s": 29.38,
+      "energy_per_1k_tokens": 7408.49,
+      "avg_power_w": 220.23
+    },
+    {
+      "run": 8,
+      "tokens": 259,
+      "throughput_tok_s": 29.05,
+      "energy_per_1k_tokens": 7456.76,
+      "avg_power_w": 219.11
+    },
+    {
+      "run": 9,
+      "tokens": 259,
+      "throughput_tok_s": 29.72,
+      "energy_per_1k_tokens": 7419.4,
+      "avg_power_w": 223.13
+    },
+    {
+      "run": 10,
+      "tokens": 259,
+      "throughput_tok_s": 30.07,
+      "energy_per_1k_tokens": 7320.29,
+      "avg_power_w": 222.77
+    }
+  ]
+}

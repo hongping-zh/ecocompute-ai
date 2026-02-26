@@ -1,0 +1,9 @@
+{
+  "model": "01-ai/Yi-1.5-9B",
+  "config": "fp16",
+  "gpu": "A800-SXM4-80GB",
+  "dataset": "wikitext-2-raw-v1",
+  "results": {
+    "perplexity": 5.732
+  }
+}

@@ -1,0 +1,87 @@
+{
+  "model": "01-ai/Yi-1.5-9B",
+  "config": "int8_default",
+  "gpu": "A800-SXM4-80GB",
+  "n_runs": 10,
+  "results": {
+    "throughput_mean": 7.41,
+    "throughput_std": 0.06,
+    "energy_per_1k_tokens_mean": 11825.92,
+    "energy_per_1k_tokens_std": 57.31,
+    "power_mean": 87.89,
+    "power_std": 1.02,
+    "cv_percent": 0.48
+  },
+  "raw_runs": [
+    {
+      "run": 1,
+      "tokens": 337,
+      "throughput_tok_s": 7.48,
+      "energy_per_1k_tokens": 11916.0,
+      "avg_power_w": 89.3
+    },
+    {
+      "run": 2,
+      "tokens": 337,
+      "throughput_tok_s": 7.49,
+      "energy_per_1k_tokens": 11915.08,
+      "avg_power_w": 89.48
+    },
+    {
+      "run": 3,
+      "tokens": 337,
+      "throughput_tok_s": 7.51,
+      "energy_per_1k_tokens": 11845.94,
+      "avg_power_w": 89.17
+    },
+    {
+      "run": 4,
+      "tokens": 337,
+      "throughput_tok_s": 7.38,
+      "energy_per_1k_tokens": 11819.9,
+      "avg_power_w": 87.41
+    },
+    {
+      "run": 5,
+      "tokens": 337,
+      "throughput_tok_s": 7.38,
+      "energy_per_1k_tokens": 11777.63,
+      "avg_power_w": 87.1
+    },
+    {
+      "run": 6,
+      "tokens": 337,
+      "throughput_tok_s": 7.38,
+      "energy_per_1k_tokens": 11728.6,
+      "avg_power_w": 86.74
+    },
+    {
+      "run": 7,
+      "tokens": 337,
+      "throughput_tok_s": 7.38,
+      "energy_per_1k_tokens": 11791.8,
+      "avg_power_w": 87.21
+    },
+    {
+      "run": 8,
+      "tokens": 337,
+      "throughput_tok_s": 7.39,
+      "energy_per_1k_tokens": 11825.55,
+      "avg_power_w": 87.64
+    },
+    {
+      "run": 9,
+      "tokens": 337,
+      "throughput_tok_s": 7.39,
+      "energy_per_1k_tokens": 11817.54,
+      "avg_power_w": 87.58
+    },
+    {
+      "run": 10,
+      "tokens": 337,
+      "throughput_tok_s": 7.36,
+      "energy_per_1k_tokens": 11821.19,
+      "avg_power_w": 87.23
+    }
+  ]
+}

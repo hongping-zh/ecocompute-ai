@@ -1,0 +1,10 @@
+{
+  "model": "/root/autodl-tmp/.cache/yi15_9b",
+  "config": "nf4",
+  "gpu": "A800-SXM4-80GB",
+  "dataset": "wikitext-2-raw-v1",
+  "max_length": 4096,
+  "results": {
+    "perplexity": 5.091
+  }
+}

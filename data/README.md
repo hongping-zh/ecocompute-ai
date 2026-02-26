@@ -4,6 +4,20 @@ This directory contains the benchmark results from our energy efficiency experim
 
 ## Files
 
+### `a800_results/`
+**NEW (Feb 26, 2026)**: Large model benchmarks on NVIDIA A800-SXM4-80GB.
+
+Contains 30 JSON files + 1 CSV summary for:
+- **Mistral-7B-v0.1** (7B parameters)
+- **Yi-1.5-9B** (9B parameters)
+- **Qwen2.5-14B** (14B parameters)
+
+Each model tested with 5 quantization configs (FP16, INT8 Default, INT8 Pure, NF4, NF4 DQ).
+
+**Key Finding**: NF4 achieves near-FP16 energy with minimal PPL degradation for 7B-14B models. INT8 Default shows 2-2.3× energy overhead.
+
+See `a800_results/README.md` for detailed documentation.
+
 ### `rtx5090_benchmark_results.csv`
 Benchmark results on NVIDIA RTX 5090 (Blackwell architecture).
 

@@ -1,0 +1,10 @@
+{
+  "model": "/root/autodl-tmp/.cache/qwen25_14b",
+  "config": "int8_default",
+  "gpu": "A800-SXM4-80GB",
+  "dataset": "wikitext-2-raw-v1",
+  "max_length": 4096,
+  "results": {
+    "perplexity": 4.656
+  }
+}
