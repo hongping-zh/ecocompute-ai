@@ -1,6 +1,7 @@
-# EcoCompute AI â€” Benchmark Dataset
+# EcoCompute AI â€?Benchmark Dataset
 
 [![License: CC BY 4.0](https://img.shields.io/badge/License-CC_BY_4.0-lightgrey.svg)](https://creativecommons.org/licenses/by/4.0/)
+[![DOI](https://zenodo.org/badge/DOI/10.5281/zenodo.18900289.svg)](https://doi.org/10.5281/zenodo.18900289)
 [![GitHub Release](https://img.shields.io/github/v/release/hongping-zh/ecocompute-ai)](https://github.com/hongping-zh/ecocompute-ai/releases)
 
 ## ðŸ“¥ Quick Download
@@ -13,15 +14,15 @@
 
 ## ðŸ“Š Dataset Overview
 
-Systematic energy efficiency benchmarks for **NF4** and **INT8** quantization across small-to-medium language models (0.5Bâ€“14B parameters) on multiple NVIDIA GPU architectures.
+Systematic energy efficiency benchmarks for **NF4** and **INT8** quantization across small-to-medium language models (0.5Bâ€?4B parameters) on multiple NVIDIA GPU architectures.
 
 ### Hardware Platforms
 
 | GPU | Architecture | Memory | Bandwidth | Models Tested |
 |-----|-------------|--------|-----------|---------------|
-| **RTX 4090D** | Ada Lovelace | 24 GB GDDR6X | 1,008 GB/s | 0.5Bâ€“3B |
-| **RTX 5090** | Blackwell | 32 GB GDDR7 | 1,792 GB/s | 0.5Bâ€“3B |
-| **A800 80GB** | Ampere | 80 GB HBM2e | 2,039 GB/s | 7Bâ€“14B |
+| **RTX 4090D** | Ada Lovelace | 24 GB GDDR6X | 1,008 GB/s | 0.5Bâ€?B |
+| **RTX 5090** | Blackwell | 32 GB GDDR7 | 1,792 GB/s | 0.5Bâ€?B |
+| **A800 80GB** | Ampere | 80 GB HBM2e | 2,039 GB/s | 7Bâ€?4B |
 
 ### Models Covered
 
@@ -46,8 +47,8 @@ Systematic energy efficiency benchmarks for **NF4** and **INT8** quantization ac
 
 ## ðŸ”¬ Key Findings
 
-1. **Small-Model Quantization Paradox**: NF4 increases energy by 25â€“56% for models <3B parameters, despite 75% memory reduction
-2. **Parameter-Dependent Gradient**: Energy overhead decreases from +56% (0.5B) â†’ +25% (3.0B)
+1. **Small-Model Quantization Paradox**: NF4 increases energy by 25â€?6% for models <3B parameters, despite 75% memory reduction
+2. **Parameter-Dependent Gradient**: Energy overhead decreases from +56% (0.5B) â†?+25% (3.0B)
 3. **INT8 Inefficiency**: 4.6Ã— worse than NF4 for small models (+142% vs +31% energy overhead)
 4. **Cross-Generational Shift**: Break-even threshold shifts from 4.2B (Ada) to 5.2B (Blackwell)
 5. **Large Model Efficiency**: NF4 achieves near-FP16 energy for 7B+ models with minimal perplexity degradation
@@ -122,12 +123,12 @@ If you use this dataset in your research, please cite:
 This dataset is released under the [Creative Commons Attribution 4.0 International License (CC BY 4.0)](https://creativecommons.org/licenses/by/4.0/).
 
 **You are free to:**
-- âœ… Share â€” copy and redistribute the material
-- âœ… Adapt â€” remix, transform, and build upon the material
-- âœ… Use for any purpose, including commercially
+- âœ?Share â€?copy and redistribute the material
+- âœ?Adapt â€?remix, transform, and build upon the material
+- âœ?Use for any purpose, including commercially
 
 **Under the condition:**
-- ðŸ“ **Attribution** â€” You must give appropriate credit and indicate if changes were made
+- ðŸ“ **Attribution** â€?You must give appropriate credit and indicate if changes were made
 
 ## ðŸ”— Related Resources
 
