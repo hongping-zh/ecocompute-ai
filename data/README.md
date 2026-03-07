@@ -1,79 +1,69 @@
-# Experimental Data
+# EcoCompute AI — Benchmark Data
 
-This directory contains the benchmark results from our energy efficiency experiments.
+[![License: CC BY 4.0](https://img.shields.io/badge/License-CC_BY_4.0-lightgrey.svg)](https://creativecommons.org/licenses/by/4.0/)
 
-## Files
+## Overview
 
-### `a800_results/`
-**NEW (Feb 26, 2026)**: Large model benchmarks on NVIDIA A800-SXM4-80GB.
+This directory contains the complete benchmark dataset for the **EcoCompute** project — a systematic study of energy efficiency implications of quantization (NF4, INT8) for small language models (0.5B–14B parameters) across multiple NVIDIA GPU architectures.
 
-Contains 30 JSON files + 1 CSV summary for:
-- **Mistral-7B-v0.1** (7B parameters)
-- **Yi-1.5-9B** (9B parameters)
-- **Qwen2.5-14B** (14B parameters)
+## Dataset Contents
 
-Each model tested with 5 quantization configs (FP16, INT8 Default, INT8 Pure, NF4, NF4 DQ).
+| File | Description |
+|------|-------------|
+| `QUANTIZATION_ENERGY_COMPLETE_DATASET_2026-03-06.md` | Complete dataset metadata: experimental configurations, raw measurements, core findings, and data quality assessment |
+| `a800_results/` | Large model benchmark data (7B–14B): Mistral-7B, Yi-1.5-9B, Qwen2.5-14B on NVIDIA A800 80GB |
 
-**Key Finding**: NF4 achieves near-FP16 energy with minimal PPL degradation for 7B-14B models. INT8 Default shows 2-2.3× energy overhead.
+## Hardware Platforms
 
-See `a800_results/README.md` for detailed documentation.
+| GPU | Architecture | Memory | Bandwidth | Models Tested |
+|-----|-------------|--------|-----------|---------------|
+| RTX 4090D | Ada Lovelace | 24 GB GDDR6X | 1,008 GB/s | 0.5B–3B |
+| RTX 5090 | Blackwell | 32 GB GDDR7 | 1,792 GB/s | 0.5B–3B |
+| A800 80GB | Ampere | 80 GB HBM2e | 2,039 GB/s | 7B–14B |
 
-### `rtx5090_benchmark_results.csv`
-Benchmark results on NVIDIA RTX 5090 (Blackwell architecture).
+## Key Findings
 
-**Columns:**
-- `model`: Model name/path
-- `config`: Quantization configuration (FP16, NF4)
-- `precision`: Bit precision (16, 4)
-- `throughput_mean`: Mean throughput in tokens/second
-- `throughput_std`: Standard deviation of throughput
-- `power_mean`: Mean power consumption in Watts
-- `power_std`: Standard deviation of power
-- `energy_per_1k_tokens_mean`: Mean energy per 1000 tokens in Joules
-- `energy_per_1k_tokens_std`: Standard deviation of energy
-- `delta_energy_pct`: Percentage change from FP16 baseline
-- `n_runs`: Number of benchmark iterations
+1. **Small-Model Quantization Paradox**: NF4 quantization increases energy by 25–56% for models under 3B parameters, despite 75% memory reduction
+2. **Parameter-Dependent Gradient**: Energy overhead decreases from +56% (0.5B) to +25% (3.0B)
+3. **INT8 Inefficiency**: 4.6× worse than NF4 for small models (+142% vs +31%)
+4. **Cross-Generational Shift**: Break-even threshold shifts from 4.2B (Ada) to 5.2B (Blackwell)
+5. **Large Model Efficiency**: NF4 achieves near-FP16 energy for 7B+ models with minimal perplexity degradation
 
-### `t4_benchmark_results.csv`
-Benchmark results on NVIDIA T4 (Turing architecture).
+## Data Quality
 
-Same column structure as RTX 5090 results.
+- Coefficient of Variation (CV) < 2% for majority of measurements
+- n=2 independent runs for key configurations
+- NVML power sampling at 10 Hz, cross-validated against wall-power meter (r=0.94)
 
-### `telemetry_config.json`
-Hardware and software configuration for reproducibility.
+## Interactive Dashboard
 
-**Contents:**
-- NVML sampling frequency and interval
-- Driver and CUDA versions
-- bitsandbytes and PyTorch versions
-- Operating system and kernel versions
-- Idle power measurements
-- Ambient temperature conditions
-- Benchmark parameters (warmup, iterations, tokens)
+Explore the data interactively at:
+**https://hongping-zh.github.io/ecocompute-dynamic-eval/**
 
-## Data Collection Methodology
+## Citation
 
-1. **Thermal Stabilization**: 5-minute warmup period before measurements
-2. **Idle Power Subtraction**: Baseline power subtracted to isolate inference energy
-3. **Multiple Iterations**: 10 measurement runs per configuration
-4. **Statistical Validation**: Paired t-tests for significance (p < 0.001)
+If you use this dataset in your research, please cite:
 
-## Usage
-
-```python
-import pandas as pd
-
-# Load RTX 5090 results
-df = pd.read_csv('rtx5090_benchmark_results.csv')
-
-# Filter by model
-qwen_data = df[df['model'].str.contains('Qwen')]
-
-# Compare FP16 vs NF4
-fp16 = df[df['config'] == 'FP16']
-nf4 = df[df['config'] == 'NF4']
+```bibtex
+@misc{zhang2026ecocompute,
+  author       = {Hongping Zhang},
+  title        = {EcoCompute: Energy Efficiency Benchmark for Quantized Language Models},
+  year         = {2026},
+  publisher    = {GitHub},
+  howpublished = {\url{https://github.com/hongping-zh/ecocompute-ai}},
+  note         = {Benchmark dataset covering NF4/INT8 quantization energy efficiency
+                  across NVIDIA Ada Lovelace, Blackwell, and Ampere architectures}
+}
 ```
 
 ## License
 
-This data is released under the MIT License. Please cite our paper if you use this data in your research.
+This dataset is released under the [Creative Commons Attribution 4.0 International License (CC BY 4.0)](https://creativecommons.org/licenses/by/4.0/).
+
+You are free to share and adapt this data for any purpose, provided you give appropriate credit.
+
+## Contact
+
+- **Author**: Hongping Zhang
+- **GitHub**: [@hongping-zh](https://github.com/hongping-zh)
+- **Repository**: https://github.com/hongping-zh/ecocompute-ai
