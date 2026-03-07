@@ -1,46 +1,95 @@
-# EcoCompute AI — Benchmark Data
+# EcoCompute AI — Benchmark Dataset
 
 [![License: CC BY 4.0](https://img.shields.io/badge/License-CC_BY_4.0-lightgrey.svg)](https://creativecommons.org/licenses/by/4.0/)
+[![GitHub Release](https://img.shields.io/github/v/release/hongping-zh/ecocompute-ai)](https://github.com/hongping-zh/ecocompute-ai/releases)
 
-## Overview
+## 📥 Quick Download
 
-This directory contains the complete benchmark dataset for the **EcoCompute** project — a systematic study of energy efficiency implications of quantization (NF4, INT8) for small language models (0.5B–14B parameters) across multiple NVIDIA GPU architectures.
+| File | Size | Description | Download |
+|------|------|-------------|----------|
+| **Complete Dataset** | ~2.5 MB | All benchmark data (metadata + raw results) | [📦 Download ZIP](https://github.com/hongping-zh/ecocompute-ai/releases/latest) |
+| **Metadata (English)** | ~10 KB | Dataset documentation and core findings | [📄 Download](https://github.com/hongping-zh/ecocompute-ai/blob/main/data/QUANTIZATION_ENERGY_COMPLETE_DATASET_2026-03-06_EN.md) |
+| **A800 Results** | ~500 KB | Large model benchmarks (7B-14B) | [📁 Browse](https://github.com/hongping-zh/ecocompute-ai/tree/main/data/a800_results) |
 
-## Dataset Contents
+## 📊 Dataset Overview
 
-| File | Description |
-|------|-------------|
-| `QUANTIZATION_ENERGY_COMPLETE_DATASET_2026-03-06.md` | Complete dataset metadata: experimental configurations, raw measurements, core findings, and data quality assessment |
-| `a800_results/` | Large model benchmark data (7B–14B): Mistral-7B, Yi-1.5-9B, Qwen2.5-14B on NVIDIA A800 80GB |
+Systematic energy efficiency benchmarks for **NF4** and **INT8** quantization across small-to-medium language models (0.5B–14B parameters) on multiple NVIDIA GPU architectures.
 
-## Hardware Platforms
+### Hardware Platforms
 
 | GPU | Architecture | Memory | Bandwidth | Models Tested |
 |-----|-------------|--------|-----------|---------------|
-| RTX 4090D | Ada Lovelace | 24 GB GDDR6X | 1,008 GB/s | 0.5B–3B |
-| RTX 5090 | Blackwell | 32 GB GDDR7 | 1,792 GB/s | 0.5B–3B |
-| A800 80GB | Ampere | 80 GB HBM2e | 2,039 GB/s | 7B–14B |
+| **RTX 4090D** | Ada Lovelace | 24 GB GDDR6X | 1,008 GB/s | 0.5B–3B |
+| **RTX 5090** | Blackwell | 32 GB GDDR7 | 1,792 GB/s | 0.5B–3B |
+| **A800 80GB** | Ampere | 80 GB HBM2e | 2,039 GB/s | 7B–14B |
 
-## Key Findings
+### Models Covered
 
-1. **Small-Model Quantization Paradox**: NF4 quantization increases energy by 25–56% for models under 3B parameters, despite 75% memory reduction
-2. **Parameter-Dependent Gradient**: Energy overhead decreases from +56% (0.5B) to +25% (3.0B)
-3. **INT8 Inefficiency**: 4.6× worse than NF4 for small models (+142% vs +31%)
+**Small Models (RTX 4090D/5090):**
+- Qwen2-0.5B-Instruct (494M params)
+- TinyLlama-1.1B-Chat-v1.0 (1.1B params)
+- Qwen2-1.5B-Instruct (1.54B params)
+- Qwen2.5-3B-Instruct (3.09B params)
+
+**Large Models (A800 80GB):**
+- Mistral-7B-v0.1 (7B params)
+- Yi-1.5-9B (9B params)
+- Qwen2.5-14B (14B params)
+
+### Quantization Configurations
+
+- **FP16** (baseline)
+- **NF4** (4-bit NormalFloat via bitsandbytes)
+- **INT8 Default** (`llm_int8_threshold=6.0`)
+- **INT8 Pure** (`llm_int8_threshold=0.0`)
+- **NF4 DQ** (NF4 with double quantization)
+
+## 🔬 Key Findings
+
+1. **Small-Model Quantization Paradox**: NF4 increases energy by 25–56% for models <3B parameters, despite 75% memory reduction
+2. **Parameter-Dependent Gradient**: Energy overhead decreases from +56% (0.5B) → +25% (3.0B)
+3. **INT8 Inefficiency**: 4.6× worse than NF4 for small models (+142% vs +31% energy overhead)
 4. **Cross-Generational Shift**: Break-even threshold shifts from 4.2B (Ada) to 5.2B (Blackwell)
 5. **Large Model Efficiency**: NF4 achieves near-FP16 energy for 7B+ models with minimal perplexity degradation
 
-## Data Quality
+## 📈 Interactive Visualization
 
-- Coefficient of Variation (CV) < 2% for majority of measurements
-- n=2 independent runs for key configurations
-- NVML power sampling at 10 Hz, cross-validated against wall-power meter (r=0.94)
+Explore the data interactively at: **https://hongping-zh.github.io/ecocompute-dynamic-eval/**
 
-## Interactive Dashboard
+## 🚀 Quick Start
 
-Explore the data interactively at:
-**https://hongping-zh.github.io/ecocompute-dynamic-eval/**
+### Load Data in Python
 
-## Citation
+```python
+import pandas as pd
+
+# Load metadata
+url = "https://raw.githubusercontent.com/hongping-zh/ecocompute-ai/main/data/QUANTIZATION_ENERGY_COMPLETE_DATASET_2026-03-06_EN.md"
+# Parse markdown tables or download CSV exports from dashboard
+
+# Example: Filter NF4 results for small models
+df = pd.read_csv("path/to/exported_data.csv")
+nf4_small = df[(df['precision'] == 'NF4') & (df['params'] < 3)]
+print(nf4_small[['model', 'energy_per_1k_tokens', 'delta_energy_pct']])
+```
+
+### Reproduce Benchmarks
+
+```bash
+git clone https://github.com/hongping-zh/ecocompute-ai.git
+cd ecocompute-ai
+pip install -r requirements.txt
+python benchmark.py --model TinyLlama-1.1B --precision fp16 nf4 int8
+```
+
+## 📋 Data Quality
+
+- **Coefficient of Variation (CV)** < 2% for majority of measurements
+- **Repeated trials**: n=2 independent runs for key configurations
+- **Power monitoring**: NVML at 10 Hz, cross-validated against wall-power meter (r=0.94)
+- **Statistical rigor**: Mean ± SD reported for all repeated experiments
+
+## 📖 Citation
 
 If you use this dataset in your research, please cite:
 
@@ -56,14 +105,43 @@ If you use this dataset in your research, please cite:
 }
 ```
 
-## License
+**For the research paper:**
+```bibtex
+@article{zhang2026quantization,
+  author  = {Hongping Zhang},
+  title   = {The Quantization Efficiency Paradox: A Systematic Review and Empirical Study 
+             across NVIDIA Ada and Blackwell Architectures},
+  journal = {arXiv preprint},
+  year    = {2026},
+  note    = {arXiv:XXXX.XXXXX}
+}
+```
+
+## 📄 License
 
 This dataset is released under the [Creative Commons Attribution 4.0 International License (CC BY 4.0)](https://creativecommons.org/licenses/by/4.0/).
 
-You are free to share and adapt this data for any purpose, provided you give appropriate credit.
+**You are free to:**
+- ✅ Share — copy and redistribute the material
+- ✅ Adapt — remix, transform, and build upon the material
+- ✅ Use for any purpose, including commercially
 
-## Contact
+**Under the condition:**
+- 📝 **Attribution** — You must give appropriate credit and indicate if changes were made
+
+## 🔗 Related Resources
+
+- **Interactive Dashboard**: https://hongping-zh.github.io/ecocompute-dynamic-eval/
+- **GitHub Repository**: https://github.com/hongping-zh/ecocompute-ai
+- **Research Paper**: [Coming soon on arXiv]
+- **HuggingFace Transformers Docs**: [Energy Efficiency Guide](https://huggingface.co/docs/transformers/main/en/quantization/bitsandbytes)
+
+## 📧 Contact
 
 - **Author**: Hongping Zhang
 - **GitHub**: [@hongping-zh](https://github.com/hongping-zh)
-- **Repository**: https://github.com/hongping-zh/ecocompute-ai
+- **Issues**: [Report data issues](https://github.com/hongping-zh/ecocompute-ai/issues)
+
+---
+
+**Last Updated**: March 7, 2026 | **Version**: 1.0.0
