@@ -6,6 +6,8 @@
 [![Live Demo](https://img.shields.io/badge/Demo-AI%20Studio-green)](https://ai.studio/apps/drive/1zlpvxS5MxmvgaIBVd5RkY3lh35Lqt2sj)
 [![License](https://img.shields.io/badge/License-MIT-yellow)](LICENSE)
 [![Hackathon](https://img.shields.io/badge/Gemini%203%20Hackathon-2026-purple)](https://gemini3.devpost.com)
+[![Featured in HF Optimum](https://img.shields.io/badge/Featured%20in-🤗%20HuggingFace%20Optimum%20Docs-FFD21E)](https://huggingface.co/docs/optimum/concept_guides/quantization)
+[![HF Dataset](https://img.shields.io/badge/🤗%20Dataset-ecocompute--energy--efficiency-blue)](https://huggingface.co/datasets/hongpingzhang/ecocompute-energy-efficiency)
 
 ---
 
