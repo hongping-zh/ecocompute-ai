@@ -35,6 +35,24 @@ This research has gained recognition from leading organizations:
 **Potential MLPerf Integration**: Our GPU-level energy measurement methodology could complement MLPerf's system-level power benchmarks, providing detailed quantization energy breakdowns for the inference benchmark suite.
 
 ---
+
+## 📁 Repository Structure
+
+```
+ecocompute-ai/
+├── 📄 README.md              # Main project documentation
+├── 📁 docs/                  # Project documentation & guides
+├── 📁 papers/                # Research papers & publications  
+├── 📁 scripts/               # Benchmark & utility scripts
+├── 📁 config/                # Configuration files
+├── 📁 assets/                # Images, figures, and media
+├── 📁 data/                  # Benchmark datasets
+├── 📁 benchmarks/            # Energy benchmark results
+├── 📁 ecocompute/            # Core application code
+├── 📁 api/                   # API endpoints
+└── 📁 components/            # UI components
+```
+
 ---
 
 ## ✨ Gemini 3 Features Showcase
