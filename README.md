@@ -86,6 +86,85 @@ No installation required. Just paste your PyTorch code and get instant energy op
 
 ---
 
+## ⚡ CLI Tool
+
+### 🛠️ Local Installation
+
+```bash
+# Clone the repository
+git clone https://github.com/hongping-zh/ecocompute-ai.git
+cd ecocompute-ai
+
+# Install dependencies
+npm install
+
+# Build CLI
+npm run build:cli
+```
+
+### 📋 CLI Usage
+
+```bash
+# Analyze a single PyTorch file
+node cli-dist/index.js analyze ./models/resnet50.py
+
+# Analyze entire directory
+node cli-dist/index.js analyze ./src/ --recursive
+
+# Specify hardware profile
+node cli-dist/index.js analyze ./model.py --hardware nvidia-h100
+
+# Export results to JSON
+node cli-dist/index.js analyze ./model.py --output results.json
+
+# Show help
+node cli-dist/index.js --help
+```
+
+### 🔧 Environment Setup
+
+Create `.env.local` file:
+```bash
+GEMINI_API_KEY=your_gemini_api_key_here
+```
+
+---
+
+## 🤖 GitHub Action
+
+### 🚀 Automated PR Energy Audits
+
+Add to your `.github/workflows/ecocompute.yml`:
+
+```yaml
+name: EcoCompute Energy Audit
+on:
+  pull_request:
+    paths: ['**/*.py', '**/*.ts']
+
+jobs:
+  energy-audit:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      
+      - name: EcoCompute Energy Auditor
+        uses: hongping-zh/ecocompute-ai@v1
+        with:
+          gemini_key: ${{ secrets.GEMINI_API_KEY }}
+          github_token: ${{ secrets.GITHUB_TOKEN }}
+```
+
+### 🎯 Action Features
+
+- **Zero Configuration**: Works out of the box
+- **Multi-Language Support**: Python, TypeScript, PyTorch
+- **Real GPU Data**: 93+ hardware profiles from actual measurements
+- **PR Comments**: Automated energy optimization suggestions
+- **CI Integration**: Fail builds on excessive energy waste
+
+---
+
 ## 🏗️ Architecture
 
 ### 🔄 Hybrid Grounding System
