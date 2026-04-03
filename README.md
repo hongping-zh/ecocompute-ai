@@ -27,6 +27,11 @@
   <a href="https://clawhub.ai/hongping-zh/ecocompute"><b>🦞 Try the interactive advisor (EcoLobster) →</b></a>
 </p>
 
+## 📈 Impact Metrics (Live Data)
+- **270+ Configurations Tested** | **3 GPU Generations** | **CV < 2%**  
+- **Energy Savings**: Up to 23% for large models | **Industry Recognition**: Hugging Face Optimum + MLCommons Power WG
+- **First Blackwell Energy Profiling** | **Open Dataset with DOI** | **Real GPU Measurements**
+
 ---
 
 ## Quick Findings
