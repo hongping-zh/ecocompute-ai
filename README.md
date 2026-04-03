@@ -6,13 +6,15 @@
 [![Live Demo](https://img.shields.io/badge/Demo-AI%20Studio-green)](https://ai.studio/apps/drive/1zlpvxS5MxmvgaIBVd5RkY3lh35Lqt2sj)
 [![License](https://img.shields.io/badge/License-MIT-yellow)](LICENSE)
 [![Hackathon](https://img.shields.io/badge/Gemini%203%20Hackathon-2026-purple)](https://gemini3.devpost.com)
+[![Featured in HF Optimum](https://img.shields.io/badge/Featured%20in-🤗%20HuggingFace%20Optimum%20Docs-FFD21E)](https://huggingface.co/docs/optimum/concept_guides/quantization)
+[![HF Dataset](https://img.shields.io/badge/🤗%20Dataset-ecocompute--energy--efficiency-blue)](https://huggingface.co/datasets/hongpingzhang/ecocompute-energy-efficiency)
 
 ---
 
 ## 🎯 What is EcoCompute AI?
 
 Training a single large language model can emit as much carbon as **5 cars over their entire lifetime**. 
-
+[![MLCommons Discussion](https://img.shields.io/badge/MLCommons-Power%20WG%20Invited-blue)](https://github.com/mlcommons/inference/issues/2558)
 EcoCompute AI is a Gemini 3-powered platform that helps developers build greener AI by providing intelligent energy optimization recommendations. Think of it as having a senior performance engineer who can:
 - **SEE** your architecture through code analysis and multimodal understanding
 - **SEARCH** the latest hardware specifications in real-time
@@ -22,7 +24,17 @@ EcoCompute AI is a Gemini 3-powered platform that helps developers build greener
 - Reduce AI model energy consumption by **30-50%**
 - Support sustainable AI development practices
 - Democratize access to green AI expertise
+## 🏆 Industry Recognition
 
+This research has gained recognition from leading organizations:
+
+- 🏛️ **MLCommons Power WG**: Invited to contribute to MLPerf power measurement standards for quantization energy efficiency ([Discussion #2558](https://github.com/mlcommons/inference/issues/2558))
+- 🤗 **HuggingFace Official**: Findings integrated into Optimum documentation ([View Docs](https://huggingface.co/docs/optimum/concept_guides/quantization))
+- 📊 **Open Dataset**: Permanent archive on Zenodo with DOI ([10.5281/zenodo.18900289](https://zenodo.org/records/18900289))
+
+**Potential MLPerf Integration**: Our GPU-level energy measurement methodology could complement MLPerf's system-level power benchmarks, providing detailed quantization energy breakdowns for the inference benchmark suite.
+
+---
 ---
 
 ## ✨ Gemini 3 Features Showcase
@@ -284,7 +296,7 @@ This project is licensed under the MIT License - see the [LICENSE](LICENSE) file
 ---
 
 ## 🙏 Acknowledgments
-
+- **MLCommons Power Working Group** for recognizing this work and inviting contribution to MLPerf power measurement standards
 - **Google DeepMind** for Gemini 3 API
 - **MLPerf** for benchmark data
 - **Open Source Community** for inspiration and tools
