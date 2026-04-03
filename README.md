@@ -294,9 +294,9 @@ This project is licensed under the MIT License - see the [LICENSE](LICENSE) file
 
 ## 📞 Contact
 
-- **Project Lead**: [Your Name]
-- **Email**: [your.email@example.com]
-- **Website**: [https://ecocompute-ai.com](https://ecocompute-ai.com)
+- **Project Lead**: Hongping Zhang
+- **Email**: zhanghongping1982@gmail.com
+- **Website**: https://hongping-zh.github.io/
 
 ---
 
