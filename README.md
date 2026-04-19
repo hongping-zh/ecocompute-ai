@@ -38,6 +38,8 @@ Our empirical study revealing that **quantization does not always save energy**�
 
 Our research identified a critical phenomenon: **quantization can increase energy consumption for small models** due to dequantization overhead. This challenges the assumption that lower precision always means better energy efficiency.
 
+**📖 [Read Full Research Summary](docs/RESEARCH_SUMMARY.md)** - Technical report with methodology, findings, and practical recommendations.
+
 **The Finding**:
 - For models below **~3.4B parameters (NF4)** or **~1.9B parameters (INT8)**, quantization actually **increases energy consumption by 25–55%**
 - Energy savings (**15–23%**) only materialize once models exceed these hardware-specific thresholds
@@ -202,7 +204,7 @@ class PredictionResponse:
 - [📖 **User Guide**](docs/user_guide.md) - Comprehensive usage instructions
 - [🔧 **API Reference**](docs/api_reference.md) - Detailed API documentation
 - [📊 **Performance Analysis**](docs/performance.md) - Benchmarks and metrics
-- [🧪 **Research Paper**](docs/paper.md) - Academic publication details
+- [🧪 **Research Summary**](docs/RESEARCH_SUMMARY.md) - Technical report on quantization-energy crossover effect
 - [🏗️ **Architecture**](docs/architecture.md) - System design and internals
 
 ## 🧪 Examples
