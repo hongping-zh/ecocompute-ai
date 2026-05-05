@@ -56,7 +56,7 @@ jobs:
         pip install build twine
 
     - name: Build package
-      run: python -m build
+      run: python -m build ./scripts --outdir dist
 
     - name: Check package
       run: twine check dist/*
