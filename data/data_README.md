@@ -12,6 +12,12 @@ This directory contains the complete benchmark dataset for the **EcoCompute** pr
 |------|-------------|
 | `QUANTIZATION_ENERGY_COMPLETE_DATASET_2026-03-06.md` | Complete dataset metadata: experimental configurations, raw measurements, core findings, and data quality assessment |
 | `a800_results/` | Large model benchmark data (7B–14B): Mistral-7B, Yi-1.5-9B, Qwen2.5-14B on NVIDIA A800 80GB |
+| `community_submission_template.csv` | Template for community benchmark summary rows |
+| `community_metadata_template.json` | Template for community hardware, software, and protocol metadata |
+
+## Community Contributions
+
+Community benchmark data should follow the repository-level [Community Benchmark Data Contribution Protocol](../CONTRIBUTING_DATA.md). Submissions must be marked as either `main-benchmark-candidate` or `supplementary-case-study` so that protocol-matched leaderboard data remains separate from diagnostic or nonstandard measurements.
 
 ## Hardware Platforms
 

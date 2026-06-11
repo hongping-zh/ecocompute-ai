@@ -327,6 +327,12 @@ We welcome contributions! Here's how to get started:
 - Open an issue with "Feature Request" label
 - Describe the use case and expected behavior
 
+### 📊 Community Benchmark Data
+- Follow the [Community Benchmark Data Contribution Protocol](CONTRIBUTING_DATA.md)
+- Use `data/community_submission_template.csv` for summary rows
+- Use `data/community_metadata_template.json` for hardware, software, and protocol metadata
+- Mark submissions as either `main-benchmark-candidate` or `supplementary-case-study`
+
 ### 🔧 Development Setup
 
 ```bash

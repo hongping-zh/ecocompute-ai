@@ -1,0 +1,65 @@
+{
+  "submission_id": "example-2026-01-01-001",
+  "track": "main-benchmark-candidate",
+  "submitter": {
+    "name": "Example Contributor",
+    "contact": "example@example.com",
+    "affiliation": "Optional affiliation"
+  },
+  "measurement_date_utc": "2026-01-01",
+  "hardware": {
+    "gpu_name": "NVIDIA Example GPU",
+    "gpu_architecture": "Example Architecture",
+    "gpu_vram_gb": 24,
+    "gpu_tdp_w": 450,
+    "gpu_power_limit_w": 450,
+    "driver_version": "000.00",
+    "cuda_version": "12.8",
+    "os": "Ubuntu 22.04",
+    "cpu_model": "Optional CPU model",
+    "gpu_index_used": 0,
+    "visible_gpu_count": 1
+  },
+  "software": {
+    "python_version": "3.11",
+    "pytorch_version": "2.4.0",
+    "transformers_version": "4.45.0",
+    "bitsandbytes_version": "0.43.0",
+    "quantization_backend": "none",
+    "benchmark_script_or_commit": "URL or commit hash"
+  },
+  "protocol": {
+    "measurement_type": "end_to_end_generation",
+    "power_source": "NVML",
+    "sampling_rate_hz": 10,
+    "warmup_runs": 3,
+    "measured_runs": 10,
+    "energy_unit": "J_per_1k_generated_tokens",
+    "integration_method": "timestamped power integration or mean_power_x_duration",
+    "idle_power_subtracted": false,
+    "cooldown_seconds_between_runs": null
+  },
+  "generation": {
+    "model_id": "Qwen/Qwen2.5-3B-Instruct",
+    "precision": "fp16",
+    "batch_size": 1,
+    "prompt_tokens": 128,
+    "generated_tokens": 512,
+    "do_sample": false,
+    "temperature": null,
+    "top_p": null,
+    "max_new_tokens": 512
+  },
+  "quality": {
+    "energy_cv_percent": 2.0,
+    "fp16_baseline_included": true,
+    "other_gpu_processes_observed": false,
+    "known_caveats": "Replace with any limitations or deviations from the protocol."
+  },
+  "artifacts": {
+    "summary_csv": "data/community_submission_template.csv",
+    "raw_archive_path": "https://example.com/archive.tar.gz",
+    "power_trace_files": [],
+    "environment_file": "pip_freeze.txt"
+  }
+}
