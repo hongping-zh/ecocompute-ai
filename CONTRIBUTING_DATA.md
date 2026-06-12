@@ -1,6 +1,10 @@
 # Community Benchmark Data Contribution Protocol
 
+Protocol version: v1.0
+
 EcoCompute welcomes community benchmark data, but contributed results must be labeled and reviewed carefully so that the main leaderboard remains comparable.
+
+Submissions are evaluated against the protocol version in effect at the time of submission. Future protocol updates will not automatically invalidate accepted historical submissions, but maintainers may relabel older rows if comparability changes.
 
 ## Contribution Tracks
 
@@ -20,6 +24,8 @@ Required conditions:
 - Energy CV should be below 3% for inclusion in the main benchmark table.
 - Include FP16 baseline for every submitted model, GPU, batch size, and generation length.
 
+Non-NVIDIA GPUs are not eligible for Track A in v1.0 because the main methodology is based on NVML telemetry. They may be submitted as Track B supplementary data if a comparable power measurement interface is available and documented.
+
 ### Track B: Supplementary Case Study
 
 Use this track for valuable measurements that do not fully match the main protocol.
@@ -32,6 +38,7 @@ Examples:
 - Backend diagnostic or compatibility experiments.
 - Energy CV above the main benchmark threshold.
 - Missing FP16 baseline.
+- Non-NVIDIA GPUs measured with documented alternatives such as `rocm-smi`, Apple power telemetry, wall-power meters, or external power sensors.
 
 Supplementary results may still be accepted, archived, and linked from update pages, but they are not automatically counted in the main benchmark configuration total.
 
@@ -63,6 +70,8 @@ Report:
 - Model source and exact model identifier.
 - Any quantization backend and settings.
 
+Contributions using quantization backends other than bitsandbytes are welcome. Examples include GPTQ, AWQ, GGUF/llama.cpp, FP8 via Transformer Engine, torchao, vendor runtimes, or custom kernels. Specify the backend name, version, and relevant settings in `quantization_backend`, and use `N/A` for `bitsandbytes_version` when bitsandbytes is not used.
+
 ### Runtime Settings
 
 Report:
@@ -77,29 +86,26 @@ Report:
 - Sampling rate in Hz.
 - Decoding parameters, including `do_sample`, `temperature`, `top_p`, and `max_new_tokens`.
 
-## Required Result Columns
+## Result CSV Schema
 
 Community result CSV files should use the schema in `data/community_submission_template.csv`.
 
-Required columns:
+Keep all template columns in the CSV so submissions remain machine-readable. Some values may be `N/A` or empty when they do not apply. Required fields are needed for any interpretable submission; optional fields improve reproducibility but should not block a useful supplementary contribution.
+
+Required fields:
 
 - `submission_id`
 - `track`
 - `submitter_name`
-- `submitter_contact`
 - `date_utc`
 - `gpu_name`
-- `gpu_architecture`
 - `gpu_vram_gb`
-- `gpu_tdp_w`
 - `driver_version`
 - `cuda_version`
 - `python_version`
 - `pytorch_version`
 - `transformers_version`
-- `bitsandbytes_version`
 - `model_id`
-- `model_parameters_b`
 - `precision`
 - `quantization_backend`
 - `batch_size`
@@ -112,12 +118,22 @@ Required columns:
 - `energy_j_per_1k_tok_std`
 - `energy_cv_percent`
 - `throughput_tok_s_mean`
-- `throughput_tok_s_std`
 - `avg_power_w_mean`
+- `notes`
+
+Optional or `N/A` fields:
+
+- `submitter_contact`
+- `gpu_architecture`
+- `gpu_tdp_w`
+- `bitsandbytes_version`
+- `model_parameters_b`
+- `throughput_tok_s_std`
 - `avg_power_w_std`
 - `peak_power_w_mean`
-- `notes`
 - `raw_archive_path`
+
+For Track A, `raw_archive_path` is strongly recommended. For Track B, it may be omitted if the PR includes enough summary data and metadata to interpret the result.
 
 ## Raw Data Requirements
 

@@ -1,4 +1,5 @@
 {
+  "protocol_version": "v1.0",
   "submission_id": "example-2026-01-01-001",
   "track": "main-benchmark-candidate",
   "submitter": {
@@ -24,8 +25,10 @@
     "python_version": "3.11",
     "pytorch_version": "2.4.0",
     "transformers_version": "4.45.0",
-    "bitsandbytes_version": "0.43.0",
+    "bitsandbytes_version": "N/A",
     "quantization_backend": "none",
+    "quantization_backend_version": "N/A",
+    "quantization_settings": "N/A",
     "benchmark_script_or_commit": "URL or commit hash"
   },
   "protocol": {
@@ -54,6 +57,9 @@
     "energy_cv_percent": 2.0,
     "fp16_baseline_included": true,
     "other_gpu_processes_observed": false,
+    "non_applicable_fields": [
+      "bitsandbytes_version"
+    ],
     "known_caveats": "Replace with any limitations or deviations from the protocol."
   },
   "artifacts": {
