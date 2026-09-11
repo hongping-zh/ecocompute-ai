@@ -1,0 +1,10 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="330" height="36" viewBox="0 0 330 36" role="img" aria-label="WorkBuddy 专家：问瓦特，量化到底省不省电">
+  <title>在 WorkBuddy 里问瓦特：量化到底省不省电</title>
+  <rect x="0" y="0" width="120" height="36" rx="7" fill="#2C2C2A"/>
+  <rect x="113" y="0" width="7" height="36" fill="#2C2C2A"/>
+  <rect x="120" y="0" width="210" height="36" rx="7" fill="#0F6E56"/>
+  <rect x="120" y="0" width="7" height="36" fill="#0F6E56"/>
+  <text x="60" y="22" font-family="PingFang SC,Microsoft YaHei,-apple-system,Segoe UI,sans-serif" font-size="12" font-weight="500" fill="#FFFFFF" text-anchor="middle">WorkBuddy 专家</text>
+  <path d="M136 10 L128 20 H134 L131 27 L140 17 H134 L137 10 Z" fill="#9FE1CB"/>
+  <text x="150" y="22" font-family="PingFang SC,Microsoft YaHei,-apple-system,Segoe UI,sans-serif" font-size="13" font-weight="500" fill="#FFFFFF">问瓦特 · 量化到底省不省电</text>
+</svg>

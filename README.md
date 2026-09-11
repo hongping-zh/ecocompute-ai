@@ -16,6 +16,9 @@
   <a href="https://huggingface.co/docs/optimum/concept_guides/quantization">
     <img src="https://img.shields.io/badge/Referenced%20by-HF%20Optimum-orange?style=for-the-badge" alt="HF Optimum"/>
   </a>
+  <a href="https://quantenergy.tech/watt/?utm_source=github&amp;utm_medium=readme&amp;utm_campaign=watt-launch&amp;utm_content=ecocompute-ai">
+    <img src="https://img.shields.io/badge/Ask%20Watt-WorkBuddy%20Expert-0ea5e9?style=for-the-badge" alt="Ask Watt on WorkBuddy"/>
+  </a>
 </p>
 
 <p align="center">
@@ -25,6 +28,8 @@
 
 <p align="center">
   <a href="https://clawhub.ai/hongping-zh/ecocompute"><b>🦞 Try the interactive advisor (EcoLobster) →</b></a>
+  &nbsp;·&nbsp;
+  <a href="https://quantenergy.tech/watt/?utm_source=github&amp;utm_medium=readme&amp;utm_campaign=watt-launch&amp;utm_content=ecocompute-ai"><b>⚡ Ask Watt in WorkBuddy →</b></a>
 </p>
 
 ## 📈 Impact Metrics (Live Data)
