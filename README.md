@@ -33,7 +33,7 @@
 </p>
 
 ## 📈 Impact Metrics (Live Data)
-- **270+ Configurations Tested** | **3 GPU Generations** | **CV < 2%**  
+- **360+ Configurations Tested** | **4 GPU Architectures** | **CV < 2%**  
 - **Energy Savings**: Up to 23% for large models | **Industry Recognition**: Hugging Face Optimum + MLCommons Power WG
 - **First Blackwell Energy Profiling** | **Open Dataset with DOI** | **Real GPU Measurements**
 
@@ -41,7 +41,7 @@
 
 ## Quick Findings
 
-- **Crossover threshold is architecture-dependent**: NF4 saves energy only above 4.2B (Ada) / 5.2B (Blackwell) / 3.4B (Turing) parameters.
+- **Crossover threshold depends on the card *and* the software stack**: in dataset v1.1.0, NF4 starts saving at ≈2.1B (T4, Turing), just above 3B (RTX 4090, Ada) and ≈4.8B (RTX 5090, Blackwell); a September 2026 re-run on a newer stack moved the 5090 crossover to ≈1.8B. A crossover belongs to a card+stack combination, not to an architecture — see [quantenergy.tech](https://quantenergy.tech/measured/) for the current table.
 - **INT8 default is a trap**: `load_in_8bit=True` increases energy by 17–147% vs FP16. Fix: set `llm_int8_threshold=0.0`.
 - **FP8 paradox**: torchao FP8 on Blackwell shows +158% to +701% energy overhead vs FP16 (confirmed by upstream maintainers).
 - **Batch size matters most**: BS=1→64 reduces energy/request by 95.7% on A800.
