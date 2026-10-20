@@ -37,6 +37,8 @@
 - **Energy Savings**: Up to 23% for large models | **Industry Recognition**: Hugging Face Optimum + MLCommons Power WG
 - **First Blackwell Energy Profiling** | **Open Dataset with DOI** | **Real GPU Measurements**
 
+> **Reproducible measurements:** This repo hosts the web app, CLI tool, and dataset. For the containerized measurement methodology (NVML power sampling, schema-validated `energy.json`), see [**ecocompute-mlcube**](https://github.com/hongping-zh/ecocompute-mlcube).
+
 ---
 
 ## Quick Findings
@@ -342,7 +344,7 @@ We welcome contributions! Here's how to get started:
 
 ```bash
 # Clone the repository
-git clone https://github.com/yourusername/ecocompute-ai.git
+git clone https://github.com/hongping-zh/ecocompute-ai.git
 cd ecocompute-ai
 
 # Install dependencies
@@ -426,6 +428,9 @@ This project is licensed under the MIT License - see the [LICENSE](LICENSE) file
 
 ## 🙏 Acknowledgments
 - **MLCommons Power Working Group** for recognizing this work and inviting contribution to MLPerf power measurement standards
+- **@gkgoing** for the first independent replication (2026-08), confirming the NF4 crossover on RTX 4090D
+- **@amarjithkumar2007-wq** for AMD GPU (ROCm) detection and context_length fixes
+- **@yesheng-oss** for the backend contribution guide
 - **Google DeepMind** for Gemini 3 API
 - **MLPerf** for benchmark data
 - **Open Source Community** for inspiration and tools

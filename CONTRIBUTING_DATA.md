@@ -23,6 +23,7 @@ Required conditions:
 - Report mean, standard deviation, and coefficient of variation for energy, throughput, and power.
 - Energy CV should be below 3% for inclusion in the main benchmark table.
 - Include FP16 baseline for every submitted model, GPU, batch size, and generation length.
+- `context_length = 2048` for qualified submissions (directly comparable to v1.1.0 baseline). Submissions with `context_length ≠ 2048` form a separate exploratory comparability class and should use Track B.
 
 Non-NVIDIA GPUs are not eligible for Track A in v1.0 because the main methodology is based on NVML telemetry. They may be submitted as Track B supplementary data if a comparable power measurement interface is available and documented.
 
