@@ -428,7 +428,7 @@ This project is licensed under the MIT License - see the [LICENSE](LICENSE) file
 
 ## 🙏 Acknowledgments
 - **MLCommons Power Working Group** for recognizing this work and inviting contribution to MLPerf power measurement standards
-- **@gkgoing** for the first independent replication (2026-08), confirming the NF4 crossover on RTX 4090D
+- **@gkgoing** for the first independent replication (2026-08): TinyLlama-1.1B NF4 on an RTX 3050 Ti — perplexity matched our RTX 4090 measurement to four decimals ([Issue #15](https://github.com/hongping-zh/ecocompute-mlcube/issues/15))
 - **@amarjithkumar2007-wq** for AMD GPU (ROCm) detection and context_length fixes
 - **@yesheng-oss** for the backend contribution guide
 - **Google DeepMind** for Gemini 3 API
