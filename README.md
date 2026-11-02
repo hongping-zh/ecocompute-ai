@@ -451,3 +451,15 @@ This project is licensed under the MIT License - see the [LICENSE](LICENSE) file
 ---
 
 **P.S.** If you find this project useful, please ⭐ star it on GitHub and share with your network! Every optimization helps make AI more sustainable.
+
+---
+
+## Part of the EcoCompute ecosystem
+
+- **[ecocompute-mlcube](https://github.com/hongping-zh/ecocompute-mlcube)** — Measure energy on YOUR GPU
+- **[quant-energy](https://github.com/hongping-zh/quant-energy)** — Interactive curves + API (deploys [quantenergy.tech](https://quantenergy.tech))
+- **[ecocompute-ai](https://github.com/hongping-zh/ecocompute-ai)** — RTX 5090 benchmark suite *(this repo)*
+- **[ecocompute-action](https://github.com/hongping-zh/hongping-zh-ecocompute-action)** — CI audit for LLM energy waste
+
+→ **[quantenergy.tech](https://quantenergy.tech)** for the full dataset
+
