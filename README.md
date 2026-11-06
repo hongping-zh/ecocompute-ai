@@ -19,11 +19,14 @@
   <a href="https://quantenergy.tech/watt/?utm_source=github&amp;utm_medium=readme&amp;utm_campaign=watt-launch&amp;utm_content=ecocompute-ai">
     <img src="https://img.shields.io/badge/Ask%20Watt-WorkBuddy%20Expert-0ea5e9?style=for-the-badge" alt="Ask Watt on WorkBuddy"/>
   </a>
+  <a href="https://github.com/hongping-zh/ecocompute-mlcube">
+    <img src="https://img.shields.io/badge/Measured%20with-ecocompute--mlcube-8b5cf6?style=for-the-badge&logo=github" alt="Measured with ecocompute-mlcube"/>
+  </a>
 </p>
 
 <p align="center">
   <b>When does quantization save energy?</b><br/>
-  A systematic empirical study of LLM quantization energy efficiency across 4 GPU architectures and 360+ measured configurations.
+  A systematic empirical study of LLM quantization energy efficiency across 4 GPU architectures and 360+ measured configurations — produced with <b><a href="https://github.com/hongping-zh/ecocompute-mlcube">ecocompute-mlcube</a></b>, the containerized NVML measurement harness.
 </p>
 
 <p align="center">
